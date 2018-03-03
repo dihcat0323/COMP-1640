@@ -10,78 +10,60 @@
 namespace COMP___1640 {
     
     
-    public partial class WebForm2 {
+    public partial class WebForm3 {
         
         /// <summary>
-        /// lbtnUser control.
+        /// txtTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbtnUser;
+        protected global::System.Web.UI.WebControls.TextBox txtTitle;
         
         /// <summary>
-        /// lblPostedDate control.
+        /// ddlCatgeory control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPostedDate;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCatgeory;
         
         /// <summary>
-        /// lblTitle control.
+        /// txtContent control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTitle;
+        protected global::System.Web.UI.WebControls.TextBox txtContent;
         
         /// <summary>
-        /// lblContent control.
+        /// fuDocLink control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblContent;
+        protected global::System.Web.UI.WebControls.FileUpload fuDocLink;
         
         /// <summary>
-        /// lbtnEdit control.
+        /// ckbAnonymous control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbtnEdit;
+        protected global::System.Web.UI.WebControls.CheckBox ckbAnonymous;
         
         /// <summary>
-        /// lblCmtCount control.
+        /// btnAddIdea control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblCmtCount;
-        
-        /// <summary>
-        /// txtCmt control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCmt;
-        
-        /// <summary>
-        /// btnSubmitCmt control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSubmitCmt;
+        protected global::System.Web.UI.WebControls.LinkButton btnAddIdea;
     }
 }

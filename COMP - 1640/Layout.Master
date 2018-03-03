@@ -21,14 +21,13 @@
                 <a href="Home.aspx" id="logo">No Mercy</a>
                 <nav>
                     <ul class="nav navbar-nav navbar-right">
-                        <%--<li><a href="#">Home</a></li>
-                        <li><a href="#">Help</a></li>--%>
                         <li><asp:LinkButton ID="lbtnUser" runat="server" Text="Login"/></li>
                     </ul>
                 </nav>
             </div>
         </header>
 
+        
         <div class="container">
             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
             </asp:ContentPlaceHolder>
@@ -40,7 +39,7 @@
                 <small><strong>The website is implemented by No Mercy Team</strong></small>
                 <ul>
                     <li><a href="#"><strong>Contact</strong></a></li>
-                    <li><a href="Login.aspx"><strong>Help</strong></a></li>
+                    <li><a href="#"><strong>Help</strong></a></li>
                 </ul>
             </nav>
         </footer>

@@ -12,7 +12,10 @@ namespace COMP___1640
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Session["Login"] != null)
+            {
+                Response.Redirect("Home.aspx");
+            }
         }
 
         protected void btnLogin_Click(object sender, EventArgs e)

@@ -4,15 +4,6 @@
     <!--CSS - JS links-->
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-<%--    <div class="container body-content col-12">
-        <div class="center jumbotron col-12">
-            <h1>Welcome to No Mercy</h1>
-            <h2>This is the home page for the <a href="Home.aspx">No Mercy</a> sample application.
-            </h2>
-            <a href="Login.aspx" class="btn btn-lg btn-primary">Sign in</a>
-        </div>
-    </div>--%>
-
     <div class="container body-content col-12">
 
         <div class="col-12">
@@ -26,7 +17,7 @@
             </form>
         </div>
         <p class="button" class="btn btn-default btn-sm">
-            <a href="/posts/new">New Post</a>
+            <a href="AddIdea.aspx">New Post</a>
         </p>
 
         <div class="center col-12">
