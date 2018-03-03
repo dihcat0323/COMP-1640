@@ -24,6 +24,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -110,6 +111,7 @@
       <DependentUpon>Layout.Master</DependentUpon>
     </Compile>
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Idea.cs" />
     <Compile Include="Models\PersonalDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
