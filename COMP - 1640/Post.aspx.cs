@@ -36,6 +36,10 @@ namespace COMP___1640
                         Session["IdeaId"] = null;
                     }
                 }
+                else
+                {
+                    Response.Redirect("Home.aspx");
+                }
             }
         }
 

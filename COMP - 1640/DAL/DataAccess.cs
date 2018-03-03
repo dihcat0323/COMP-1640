@@ -161,5 +161,50 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                 return null;
             }
         }
+
+        public List<Idea> GetAllIdeas()
+        {
+            var lstIdea = new List<Idea>();
+            var query = string.Format("SELECT * FROM Idea");
+
+            try
+            {
+                var conn = Connect();
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var idea = new Idea();
+                        idea.Id = int.Parse(reader["i_ID"].ToString());
+                        idea.CategoryId = int.Parse(reader["c_ID"].ToString());
+                        idea.PersonalId = int.Parse(reader["p_ID"].ToString());
+                        idea.Title = reader["i_Title"].ToString();
+                        idea.Details = reader["i_Details"].ToString();
+                        idea.DocumentLink = reader["DocumentLink"].ToString();
+                        idea.isAnonymous = bool.Parse(reader["i_IsAnonymous"].ToString()) ? 1 : 0;
+                        idea.TotalViews = int.Parse(reader["TotalViews"].ToString());
+                        idea.PostedDate = Convert.ToDateTime(String.IsNullOrEmpty(reader["i_PostedDate"].ToString()) ? "" : reader["i_PostedDate"].ToString());
+                        idea.ClosureDate = Convert.ToDateTime(String.IsNullOrEmpty(reader["i_ClosureDate"].ToString()) ? "" : reader["i_ClosureDate"].ToString());
+
+                        lstIdea.Add(idea);
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+
+                conn.Close();
+                return lstIdea;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }
