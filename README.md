@@ -5,6 +5,6 @@ Repository for the "No Mercy" Group
 - [Artefacts](https://github.com/gibbykshmr/COMP-1640/tree/master/Artefacts)
   - [Meeting Minutes](https://github.com/gibbykshmr/COMP-1640/tree/master/Artefacts/Meeting%20Minutes)
   - [ERD]
-  - [Product Backlog]
+  - [Product Backlog](https://docs.google.com/spreadsheets/d/1o3PsrX7N0OL0rqpgAS2aF7JuImLJiwmiTAS3OnYkpXc/edit#gid=555137485)
 
 
