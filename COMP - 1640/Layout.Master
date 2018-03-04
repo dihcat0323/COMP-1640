@@ -1,0 +1,48 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Layout.master.cs" Inherits="COMP___1640.Layout" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <title>Ideas Submission</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link href="Scripts/bootstrap.css" rel="stylesheet" />
+    <link href="Scripts/bootstrap.min.css" rel="stylesheet" />
+    <link href="Scripts/Custom.css" rel="stylesheet" />
+    <link href="Scripts/RWD.css" rel="stylesheet" />
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <header class="navbar navbar-fixed-top navbar-inverse header col-12">
+            <div class="container">
+                <a href="Home.aspx" id="logo">No Mercy</a>
+                <nav>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><asp:LinkButton ID="lbtnUser" runat="server" Text="Login"/></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        
+        <div class="container">
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+
+        <footer class="footer col-12 container navbar-fixed-bottom" style="border-top: 1px solid #ccc">
+
+            <nav>
+                <small><strong>The website is implemented by No Mercy Team</strong></small>
+                <ul>
+                    <li><a href="#"><strong>Contact</strong></a></li>
+                    <li><a href="#"><strong>Help</strong></a></li>
+                </ul>
+            </nav>
+        </footer>
+    </form>
+</body>
+</html>
