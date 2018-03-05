@@ -4,21 +4,20 @@
     <!--CSS - JS links-->
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="container body-content col-12">
+    <%--<div class="container body-content col-12">
 
         <div class="col-12">
-            <form action="/posts" accept-charset="UTF-8" method="get">
-                <div class="form-group input-group">
-                    <input type="text" name="search" id="search" placeholder="Search post" class="form-control" />
-                    <span class="input-group-btn">
-                        <input type="submit" value="Search" class="btn btn-default" data-disable-with="Search" />
-                    </span>
-                </div>
-            </form>
+            <div class="form-group input-group">
+                <input type="text" name="search" id="search" placeholder="Search post" class="form-control" />
+                <span class="input-group-btn">
+                    <input type="submit" value="Search" class="btn btn-default" data-disable-with="Search" />
+                </span>
+            </div>
         </div>
-        <p class="button" class="btn btn-default btn-sm">
+        <p class="button">fadsf
             <a href="AddIdea.aspx">New Post</a>
         </p>
+
 
         <div class="center col-12">
             <div class="col-12">
@@ -49,22 +48,12 @@
                 </div>
             </div>
 
-            <div class="col-12">
-                <div class="well">
-                    <p><a href="#">Gibson</a> posted:</p>
-                    <h2><a href="#">US masses stealth jets in South Korea for war games</a></h2>
-                    <p>
-                        All-electric motorsport took a giant leap into the future last month, with Formula E unveiling it's Batmobile-like Gen2 race car.
-
-                        Now three races into its fourth season, FE unveiled the vehicle its racers will be piloting when season five gets under way later this year.
-                        With its futuristic styling and increase in power and range, the Gen2 car further distances itself from established racing categories like Formula One and IndyCar.
-                    </p>
-                    <span class="timestamp">
-                        posted 185 days ago.
-                    </span>
-                </div>
-            </div>
         </div>
-
-    </div>
+    </div>--%>
+    
+    <script type="text/javascript">
+        function ideaOnclick() {
+            
+        }
+    </script>
 </asp:Content>

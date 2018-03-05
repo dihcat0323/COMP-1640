@@ -36,6 +36,10 @@ namespace COMP___1640
                         Session["IdeaId"] = null;
                     }
                 }
+                else
+                {
+                    Response.Redirect("Home.aspx");
+                }
             }
         }
 
@@ -48,11 +52,16 @@ namespace COMP___1640
             if (idea != null && idea.Id > 0)
             {
                 var user = (PersonalDetails)Session["Login"];
-                lbtnUser.Text = user.Name;
-                lblPostedDate.Text = idea.PostedDate.ToString();
-                lblTitle.Text = "<h2>" + idea.Title + "</h2>";
-                lblContent.Text = "<p>" + idea.Details + "</p>";
+                lbtnUser.InnerHtml = user.Name;
+                lblPostedDate.Text = "Posted " + new Common().CalculatePostedDate(idea.PostedDate) + " days ago";
+                lblTitle.InnerHtml = idea.Title;
+                lblContent.InnerHtml = idea.Details;
 
+                //Category Name
+                lblCategory.InnerHtml = new DataAccess().GetCategoryById(idea.CategoryId).Name;
+                lblDocumentLink.InnerHtml = string.IsNullOrEmpty(idea.DocumentLink) ? "No Link" : idea.DocumentLink;
+                lblAnonymous.InnerHtml = idea.isAnonymous == 0 ? "No" : "Yes";
+                lblTotalView.InnerHtml = idea.TotalViews.ToString();
             }
         }
     }

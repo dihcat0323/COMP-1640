@@ -19,7 +19,7 @@ namespace COMP___1640 {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbtnUser;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor lbtnUser;
         
         /// <summary>
         /// lblPostedDate control.
@@ -37,7 +37,7 @@ namespace COMP___1640 {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblTitle;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblTitle;
         
         /// <summary>
         /// lblContent control.
@@ -46,16 +46,43 @@ namespace COMP___1640 {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblContent;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblContent;
         
         /// <summary>
-        /// lbtnEdit control.
+        /// lblCategory control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbtnEdit;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblCategory;
+        
+        /// <summary>
+        /// lblDocumentLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblDocumentLink;
+        
+        /// <summary>
+        /// lblAnonymous control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblAnonymous;
+        
+        /// <summary>
+        /// lblTotalView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblTotalView;
         
         /// <summary>
         /// lblCmtCount control.

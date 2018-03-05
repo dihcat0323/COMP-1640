@@ -48,6 +48,42 @@ namespace COMP___1640.DAL
             }
         }
 
+        public PersonalDetails GetUserById(int id)
+        {
+            var query = string.Format("SELECT * FROM PersonalDetail WHERE p_ID = {0}", id);
+            try
+            {
+                var conn = Connect();
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        return new PersonalDetails
+                        {
+                            Id = int.Parse(reader["p_ID"].ToString()),
+                            roleId = int.Parse(reader["r_ID"].ToString()),
+                            departmentId = int.Parse(reader["dp_ID"].ToString()),
+                            Name = reader["p_Name"].ToString(),
+                            Email = reader["p_Email"].ToString(),
+                            Pass = reader["p_Pass"].ToString(),
+                            Details = reader["p_Detail"].ToString()
+                        };
+                    }
+                }
+
+                conn.Close();
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         public int AddIdea(Idea idea)
         {
             var id = -1;
@@ -62,7 +98,6 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                 conn.Open();
 
                 var cmd = new SqlCommand(query, conn);
-                //stt = cmd.ExecuteNonQuery() == 1;
                 id = (int)cmd.ExecuteScalar();
 
                 conn.Close();
@@ -114,6 +149,38 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
             return lstCat;
         }
 
+        public Category GetCategoryById(int id)
+        {
+            var query = string.Format("SELECT * FROM Category WHERE c_ID = {0}", id);
+            try
+            {
+                var conn = Connect();
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        return new Category
+                        {
+                            Id = int.Parse(reader["c_ID"].ToString()),
+                            Name = reader["c_Name"].ToString(),
+                            Description = reader["c_Description"].ToString()
+                        };
+                    }
+                }
+
+                conn.Close();
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         public Idea GetIdeaById(int id)
         {
             var idea = new Idea();
@@ -138,21 +205,6 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                     idea.TotalViews = int.Parse(reader["TotalViews"].ToString());
                     idea.PostedDate = Convert.ToDateTime(String.IsNullOrEmpty(reader["i_PostedDate"].ToString()) ? "" : reader["i_PostedDate"].ToString());
                     idea.ClosureDate = Convert.ToDateTime(String.IsNullOrEmpty(reader["i_ClosureDate"].ToString()) ? "" : reader["i_ClosureDate"].ToString());
-
-
-                    //idea = new Idea
-                    //{
-                    //    Id = id,
-                    //    CategoryId = int.Parse(reader["c_ID"].ToString()),
-                    //    PersonalId = int.Parse(reader["p_ID"].ToString()),
-                    //    Title = reader["i_Title"].ToString(),
-                    //    Details = reader["i_Details"].ToString(),
-                    //    DocumentLink = reader["DocumentLink"].ToString(),
-                    //    isAnonymous = int.Parse(reader["i_IsAnonymous"].ToString()),
-                    //    TotalViews = int.Parse(reader["TotalViews"].ToString()),
-                    //    PostedDate = Convert.ToDateTime(String.IsNullOrEmpty(reader["i_PostedDate"].ToString()) ? "" : reader["i_PostedDate"].ToString()),
-                    //    ClosureDate = Convert.ToDateTime(String.IsNullOrEmpty(reader["i_ClosureDate"].ToString()) ? "" : reader["i_ClosureDate"].ToString())
-                    //};
                 }
                 return idea;
             }
@@ -161,5 +213,51 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                 return null;
             }
         }
+
+        public List<Idea> GetAllIdeas()
+        {
+            var lstIdea = new List<Idea>();
+            var query = string.Format("SELECT * FROM Idea");
+
+            try
+            {
+                var conn = Connect();
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var idea = new Idea();
+                        idea.Id = int.Parse(reader["i_ID"].ToString());
+                        idea.CategoryId = int.Parse(reader["c_ID"].ToString());
+                        idea.PersonalId = int.Parse(reader["p_ID"].ToString());
+                        idea.Title = reader["i_Title"].ToString();
+                        idea.Details = reader["i_Details"].ToString();
+                        idea.DocumentLink = reader["DocumentLink"].ToString();
+                        idea.isAnonymous = bool.Parse(reader["i_IsAnonymous"].ToString()) ? 1 : 0;
+                        idea.TotalViews = int.Parse(reader["TotalViews"].ToString());
+                        idea.PostedDate = Convert.ToDateTime(String.IsNullOrEmpty(reader["i_PostedDate"].ToString()) ? "" : reader["i_PostedDate"].ToString());
+                        idea.ClosureDate = Convert.ToDateTime(String.IsNullOrEmpty(reader["i_ClosureDate"].ToString()) ? "" : reader["i_ClosureDate"].ToString());
+
+                        lstIdea.Add(idea);
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+
+                conn.Close();
+                return lstIdea;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
     }
 }
