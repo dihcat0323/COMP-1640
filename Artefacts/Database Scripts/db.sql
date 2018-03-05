@@ -40,7 +40,7 @@ CREATE TABLE Idea
 	i_ID INT PRIMARY KEY IDENTITY (1,1),
 	c_ID INT FOREIGN KEY REFERENCES Category(c_ID), --FK
 	p_ID INT FOREIGN KEY REFERENCES PersonalDetail(p_ID), --FK
-	i_Titile nvarchar(150) NOT NULL UNIQUE,
+	i_Title nvarchar(150) NOT NULL UNIQUE,
 	i_Details nvarchar(500),
 	DocumentLink nvarchar(300), -- link to the additional document uploaded by author of the idea
 	i_IsAnonymous bit,
