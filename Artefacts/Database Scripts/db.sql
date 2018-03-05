@@ -65,6 +65,3 @@ CREATE TABLE Voting
 	p_ID INT FOREIGN KEY REFERENCES PersonalDetail(p_ID),
 	Vote bit
 )
-
-insert into PersonalDetail values (null, null,'spacely', 'ss@pp.com', '123', 'Music student')
-select * from PersonalDetail
