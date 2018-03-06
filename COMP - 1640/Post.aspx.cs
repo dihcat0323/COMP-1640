@@ -1,45 +1,31 @@
 ﻿using COMP___1640.DAL;
 using COMP___1640.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace COMP___1640
 {
-    public partial class WebForm2 : System.Web.UI.Page
+    public partial class WebForm2 : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["Login"] == null)
+            if (Session["IdeaId"] != null)
             {
-                var script = "alert(\"ERROR: You must Login first!!!\");";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
-                Response.Redirect("Login.aspx");
+                int id = -1;
+                int.TryParse(Session["IdeaId"].ToString(), out id);
+                Session["IdeaId"] = null;
+
+
+                if (id > 0)
+                {
+                    //Load data to page and clear Session IdeaId
+                    LoadIdeaById(id);
+                }
             }
             else
             {
-                //load submitted idea to page
-                if (Session["IdeaId"] != null)
-                {
-                    int id = -1;
-                    int.TryParse(Session["IdeaId"].ToString(), out id);
-
-
-                    if (id > 0)
-                    {
-                        //Load data to page and clear Session IdeaId
-                        LoadIdeaById(id);
-
-                        Session["IdeaId"] = null;
-                    }
-                }
-                else
-                {
-                    Response.Redirect("Home.aspx");
-                }
+                Session["IdeaId"] = null;
+                Response.Redirect("Home.aspx");
             }
         }
 
@@ -51,8 +37,16 @@ namespace COMP___1640
             //Load idea to page
             if (idea != null && idea.Id > 0)
             {
-                var user = (PersonalDetails)Session["Login"];
-                lbtnUser.InnerHtml = user.Name;
+                var user = new PersonalDetails();
+                if (Session["Login"] != null)
+                {
+                    user = (PersonalDetails)Session["Login"];
+                    lbtnUser.InnerHtml = user.Name;
+                }
+                else
+                {
+                    lbtnUser.InnerHtml = new DataAccess().GetUserById(idea.PersonalId).Name;
+                }
                 lblPostedDate.Text = "Posted " + new Common().CalculatePostedDate(idea.PostedDate) + " days ago";
                 lblTitle.InnerHtml = idea.Title;
                 lblContent.InnerHtml = idea.Details;

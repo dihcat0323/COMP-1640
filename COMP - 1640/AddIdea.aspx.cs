@@ -1,15 +1,12 @@
 ﻿using COMP___1640.DAL;
 using COMP___1640.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace COMP___1640
 {
-    public partial class WebForm3 : System.Web.UI.Page
+    public partial class WebForm3 : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -52,6 +49,13 @@ namespace COMP___1640
             if (title.Equals("") || content.Equals(""))
             {
                 var script = "alert(\"ERROR: Title and Content are required!!!\");";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
+                return;
+            }
+
+            if (!ckbAgreeTerms.Checked)
+            {
+                var script = "alert(\"ERROR: You cannot submit idea if you are not agree with the terms and conditions!!!\");";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
                 return;
             }

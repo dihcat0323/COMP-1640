@@ -36,6 +36,11 @@
                 <asp:CheckBox ID="ckbAnonymous" runat="server" Text="Submit as Anonymous" />
             </div>
 
+            <div class="form-group">
+                <asp:CheckBox ID="ckbAgreeTerms" runat="server" />
+                <a href="#">Agree With Terms and Conditions</a>
+            </div>
+
             <asp:LinkButton ID="btnAddIdea" runat="server" CssClass="btn btn-primary col-12" Text="Submit Idea" OnClick="btnAddIdea_Click"/>
         </div>
 

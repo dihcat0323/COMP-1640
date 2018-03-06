@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace COMP___1640.Models
+﻿namespace COMP___1640.Models
 {
     public class Category
     {
