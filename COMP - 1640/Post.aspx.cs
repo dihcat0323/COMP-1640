@@ -58,5 +58,19 @@ namespace COMP___1640
                 lblTotalView.InnerHtml = idea.TotalViews.ToString();
             }
         }
+
+        protected void btnSubmitCmt_Click(object sender, EventArgs e)
+        {
+            var cmt = txtCmt.Text;
+
+            if (string.IsNullOrEmpty(cmt))
+            {
+                var script = "alert(\"ERROR: You cannot submit the comment without typing anything!!!\");";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
+                return;
+            }
+
+
+        }
     }
 }

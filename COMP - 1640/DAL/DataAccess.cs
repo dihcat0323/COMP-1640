@@ -12,7 +12,7 @@ namespace COMP___1640.DAL
             //return new SqlConnection(WebConfigurationManager.AppSettings["ConnectionString"]);
             return new SqlConnection("Data Source=.;Initial Catalog=IdeasCampaignManager;Integrated Security=False;User Id=sa;Password=abc@12345;MultipleActiveResultSets=True");
         }
-
+        #region PersonalDetail
         public PersonalDetails CheckLogIn(string email, string pass)
         {
             var query = string.Format("SELECT * FROM PersonalDetail WHERE p_Email = '{0}' AND p_Pass = '{1}'", email, pass);
@@ -80,7 +80,9 @@ namespace COMP___1640.DAL
                 return null;
             }
         }
+        #endregion
 
+        #region Idea
         public int AddIdea(Idea idea)
         {
             var id = -1;
@@ -103,78 +105,6 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
             catch (Exception ex)
             {
                 return -1;
-            }
-        }
-
-
-        public List<Category> GetAllCategory()
-        {
-            var query = string.Format("SELECT * FROM Category");
-            var lstCat = new List<Category>();
-            try
-            {
-                var conn = Connect();
-                conn.Open();
-
-                var cmd = new SqlCommand(query, conn);
-                var reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        var cat = new Category
-                        {
-                            Id = int.Parse(reader["c_ID"].ToString()),
-                            Name = reader["c_Name"].ToString(),
-                            Description = reader["c_Description"].ToString()
-                        };
-                        lstCat.Add(cat);
-                    }
-                }
-                else
-                {
-                    return null;
-                }
-
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-
-            return lstCat;
-        }
-
-        public Category GetCategoryById(int id)
-        {
-            var query = string.Format("SELECT * FROM Category WHERE c_ID = {0}", id);
-            try
-            {
-                var conn = Connect();
-                conn.Open();
-
-                var cmd = new SqlCommand(query, conn);
-                var reader = cmd.ExecuteReader();
-                if (reader.HasRows)
-                {
-                    while (reader.Read())
-                    {
-                        return new Category
-                        {
-                            Id = int.Parse(reader["c_ID"].ToString()),
-                            Name = reader["c_Name"].ToString(),
-                            Description = reader["c_Description"].ToString()
-                        };
-                    }
-                }
-
-                conn.Close();
-                return null;
-            }
-            catch (Exception ex)
-            {
-                return null;
             }
         }
 
@@ -255,6 +185,118 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                 return null;
             }
         }
+        #endregion
+
+        #region Category
+        public List<Category> GetAllCategory()
+        {
+            var query = string.Format("SELECT * FROM Category");
+            var lstCat = new List<Category>();
+            try
+            {
+                var conn = Connect();
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        var cat = new Category
+                        {
+                            Id = int.Parse(reader["c_ID"].ToString()),
+                            Name = reader["c_Name"].ToString(),
+                            Description = reader["c_Description"].ToString()
+                        };
+                        lstCat.Add(cat);
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+            return lstCat;
+        }
+
+        public Category GetCategoryById(int id)
+        {
+            var query = string.Format("SELECT * FROM Category WHERE c_ID = {0}", id);
+            try
+            {
+                var conn = Connect();
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        return new Category
+                        {
+                            Id = int.Parse(reader["c_ID"].ToString()),
+                            Name = reader["c_Name"].ToString(),
+                            Description = reader["c_Description"].ToString()
+                        };
+                    }
+                }
+
+                conn.Close();
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        #endregion
+
+        #region Role
+        public Role GetRoleById(int id)
+        {
+            var query = string.Format("SELECT * FROM Role WHERE r_ID = {0}", id);
+            try
+            {
+                var conn = Connect();
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        return new Role
+                        {
+                            Id = int.Parse(reader["r_ID"].ToString()),
+                            Name = reader["r_Name"].ToString(),
+                            Description = reader["r_Description"].ToString()
+                        };
+                    }
+                }
+
+                conn.Close();
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        #endregion
+
+        #region Comment
+
+        #endregion
 
     }
 }

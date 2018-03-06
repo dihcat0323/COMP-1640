@@ -54,7 +54,7 @@
                         <asp:TextBox ID="txtCmt" runat="server" CssClass="form-control" placecholder="Comment here..." />
                     </div>
                     <div class="form-group">
-                        <asp:Button ID="btnSubmitCmt" runat="server" Text="Submit Comment" CssClass="btn" />
+                        <asp:Button ID="btnSubmitCmt" runat="server" Text="Submit Comment" CssClass="btn"  OnClick="btnSubmitCmt_Click"/>
                     </div>
                 </div>
             </div>
