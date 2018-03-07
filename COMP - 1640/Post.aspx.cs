@@ -61,18 +61,20 @@ namespace COMP___1640
 
         private void LoadCmtByIdea(int ideaId)
         {
-            if (Session["Login"] == null)
+            //user must login in order to view the comments, otherwise all the comments will not be displayed
+            if (Session["Login"] != null)
             {
-                Response.Redirect("Login.aspx");
-            }
-            var user = (PersonalDetails)Session["Login"];
+                //Response.Redirect("Login.aspx");
 
-            var cmt = new DataAccess().GetCommentsByIdea(ideaId);
-            var cmtUi = PopulateComments(cmt, user.roleId);
-            var jsonSerialiser = new JavaScriptSerializer();
-            cmtUi.Reverse();
-            var script = "bindComments('" + jsonSerialiser.Serialize(cmtUi) + "')";
-            ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
+                var user = (PersonalDetails)Session["Login"];
+
+                var cmt = new DataAccess().GetCommentsByIdea(ideaId);
+                var cmtUi = PopulateComments(cmt, user.roleId);
+                var jsonSerialiser = new JavaScriptSerializer();
+                cmtUi.Reverse();
+                var script = "bindComments('" + jsonSerialiser.Serialize(cmtUi) + "')";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
+            }
         }
 
         private List<CommentUI> PopulateComments(List<Comment> lstCmt, int roleId)

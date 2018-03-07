@@ -6,7 +6,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <script type="text/javascript">
         function ideaOnclick(lnk) {
-            var id = lnk.getAttribute('ideaID');
+            var id = lnk.getAttribute('ideaId');
             var pageUrl = '<%=ResolveUrl("Home.aspx")%>';
             $.ajax({
                 type: "POST",

@@ -101,30 +101,30 @@ namespace COMP___1640
         private void SendEmailToStaff(string title, string content)
         {
             //check role if student - no need
-            //var user = (PersonalDetails)Session["Login"];
+            var user = (PersonalDetails)Session["Login"];
             //var role = new DataAccess().GetRoleById(user.roleId);
 
             //if (role.Name.ToLower().Contains("student"))
             //{
-                SmtpClient client = new SmtpClient();
-                client.Port = 587;
-                client.Host = "smtp.gmail.com";
-                client.EnableSsl = true;
-                client.Timeout = 10000;
-                client.DeliveryMethod = SmtpDeliveryMethod.Network;
-                client.UseDefaultCredentials = false;
-                client.Credentials = new System.Net.NetworkCredential("minhduongnhat1996@gmail.com", "1102Nomatkhauhehe");
+            SmtpClient client = new SmtpClient();
+            client.Port = 587;
+            client.Host = "smtp.gmail.com";
+            client.EnableSsl = true;
+            client.Timeout = 10000;
+            client.DeliveryMethod = SmtpDeliveryMethod.Network;
+            client.UseDefaultCredentials = false;
+            client.Credentials = new System.Net.NetworkCredential("minhduongnhat1996@gmail.com", "1102Nomatkhauhehe");
 
-                MailMessage mailMessage = new MailMessage();
-                mailMessage.To.Add("minhduongnhat1996@gmail.com");
-                mailMessage.From = new MailAddress("minhduongnhat1996@gmail.com");
-                mailMessage.Subject = "[NEW IDEA SUBMITTED]";
-                mailMessage.Body = MailBody(title, content, user.Email);
-                mailMessage.BodyEncoding = Encoding.UTF8;
-                mailMessage.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
-                mailMessage.IsBodyHtml = true;
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.To.Add("minhduongnhat1996@gmail.com");
+            mailMessage.From = new MailAddress("minhduongnhat1996@gmail.com");
+            mailMessage.Subject = "[NEW IDEA SUBMITTED]";
+            mailMessage.Body = MailBody(title, content, user.Email);
+            mailMessage.BodyEncoding = Encoding.UTF8;
+            mailMessage.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
+            mailMessage.IsBodyHtml = true;
 
-                client.Send(mailMessage);
+            client.Send(mailMessage);
             //}
         }
 
