@@ -49,6 +49,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -115,6 +116,7 @@
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\CommentUI.cs" />
     <Compile Include="Models\Idea.cs" />
+    <Compile Include="Models\IdeaUI.cs" />
     <Compile Include="Models\PersonalDetails.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -24,5 +24,33 @@
                 },
             });
         }
+
+        function bindIdeasToPage(lst) {
+            var html = "";
+            var x = JSON.parse(lst);
+            for (var i = 0; i < x.length; i++) {
+                html += "<div class='col-12'><div class='well'><p><a href='#'>" + x[i].userName + "</a> posted:</p><h2><a href='#' onclick='ideaOnclick(this)' ideaId='" + x[i].ideaId + "'>" + x[i].ideaTitle + "</a></h2><p>" + x[i].ideaContent + "</p><span class='timestamp'>posted " + x[i].postedDate + " days ago.</span></div></div>";
+            }
+            $("#lstIdeas").html(html);
+        }
     </script>
+
+    <div class='container body-content col-12'>
+
+        <div class='col-12'>
+            <div class='form-group input-group'>
+                <input type='text' name='search' id='search' placeholder='Search post' class='form-control' />
+                <span class='input-group-btn'>
+                    <input type='submit' value='Search' class='btn btn-default' data-disable-with='Search' />
+                </span>
+            </div>
+        </div>
+        <p class='button'>
+            <a href='AddIdea.aspx'>New Post</a>
+        </p>
+
+
+        <div class='center col-12' id='lstIdeas'>
+        </div>
+    </div>
 </asp:Content>

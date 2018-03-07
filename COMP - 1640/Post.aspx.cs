@@ -37,16 +37,8 @@ namespace COMP___1640
             //Load idea to page
             if (idea != null && idea.Id > 0)
             {
-                var user = new PersonalDetails();
-                if (Session["Login"] != null)
-                {
-                    user = (PersonalDetails)Session["Login"];
-                    lbtnUser.InnerHtml = user.Name;
-                }
-                else
-                {
-                    lbtnUser.InnerHtml = new DataAccess().GetUserById(idea.PersonalId).Name;
-                }
+                var user = new DataAccess().GetUserById(idea.PersonalId);
+                lbtnUser.InnerHtml = user.Name;
                 lblPostedDate.Text = "Posted " + new Common().CalculatePostedDate(idea.PostedDate) + " days ago";
                 lblTitle.InnerHtml = idea.Title;
                 lblContent.InnerHtml = idea.Details;
