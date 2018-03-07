@@ -3,8 +3,18 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="container body-content col-12">
+    <script type="text/javascript">
+        function bindComments(lst) {
+            var html = "";
+            var c = JSON.parse(lst);
+            for (var i = 0; i < c.length; i++) {
+                html += '<div class="media"><p class="pull-right"><small>' + c[i].postedDate + ' days ago</small></p><div class="media-body"><h4 class="media-heading user_name">' + c[i].userName + '</h4>' + c[i].Details + '</div></div>'
+            }
 
+            $("#lstComment").html(html);
+        }
+    </script>
+    <div class="container body-content col-12">
         <div class="container">
             <div class="row">
                 <aside class="col-md-8">
@@ -41,20 +51,23 @@
                             <span id="lblTotalView" runat="server"></span>
                         </div>
                     </section>
-
-
-                    <%--<asp:LinkButton ID="lbtnEdit" runat="server" Text="Edit" />--%>
                 </aside>
 
 
                 <div class="col-md-4">
                     <h3>Comment
-                        <asp:Label ID="lblCmtCount" runat="server" /></h3>
+                        <asp:Label ID="lblCmtCount" runat="server" />
+                    </h3>
+
+                    <div class="form-group comment-list" id="lstComment">
+                    </div>
+
                     <div class="form-group">
                         <asp:TextBox ID="txtCmt" runat="server" CssClass="form-control" placecholder="Comment here..." />
+                        <asp:CheckBox ID="ckbAnonymous" runat="server" Text="Submit Comment as Anonymous" />
                     </div>
                     <div class="form-group">
-                        <asp:Button ID="btnSubmitCmt" runat="server" Text="Submit Comment" CssClass="btn"  OnClick="btnSubmitCmt_Click"/>
+                        <asp:Button ID="btnSubmitCmt" runat="server" Text="Submit Comment" CssClass="btn" OnClick="btnSubmitCmt_Click" />
                     </div>
                 </div>
             </div>

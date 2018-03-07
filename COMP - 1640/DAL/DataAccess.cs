@@ -37,6 +37,7 @@ namespace COMP___1640.DAL
                     };
                 }
 
+                conn.Close();
                 return null;
             }
             catch (Exception ex)
@@ -133,6 +134,7 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                     idea.PostedDate = Convert.ToDateTime(String.IsNullOrEmpty(reader["i_PostedDate"].ToString()) ? "" : reader["i_PostedDate"].ToString());
                     idea.ClosureDate = Convert.ToDateTime(String.IsNullOrEmpty(reader["i_ClosureDate"].ToString()) ? "" : reader["i_ClosureDate"].ToString());
                 }
+                conn.Close();
                 return idea;
             }
             catch (Exception ex)
@@ -211,13 +213,13 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                         };
                         lstCat.Add(cat);
                     }
+                    conn.Close();
                 }
                 else
                 {
+                    conn.Close();
                     return null;
                 }
-
-                conn.Close();
             }
             catch (Exception ex)
             {
@@ -295,7 +297,61 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
         #endregion
 
         #region Comment
+        public bool AddComment(Comment cmt)
+        {
+            var stt = false;
+            var query = string.Format("INSERT INTO Comment (I_ID, p_ID, cmt_Detail, cmt_IsAnonymous, cmt_PostedDate) VALUES ({0}, {1}, '{2}', '{3}', '{4}')",
+                cmt.ideaId, cmt.personId, cmt.Details, cmt.isAnonymous.ToString().ToLower(), cmt.postedDate);
 
+            try
+            {
+                var conn = Connect();
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                stt = cmd.ExecuteNonQuery() == 1;
+
+                conn.Close();
+                return stt;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public List<Comment> GetCommentsByIdea(int ideaId)
+        {
+            var lstCmt = new List<Comment>();
+            var query = string.Format("SELECT * FROM Comment WHERE I_ID = {0}", ideaId);
+
+            try
+            {
+                var conn = Connect();
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    var cmt = new Comment();
+                    cmt.Id = int.Parse(reader["cmt_ID"].ToString());
+                    cmt.ideaId = int.Parse(reader["I_ID"].ToString());
+                    cmt.personId = int.Parse(reader["p_ID"].ToString());
+                    cmt.Details = reader["cmt_Detail"].ToString();
+                    cmt.isAnonymous = bool.Parse(reader["cmt_IsAnonymous"].ToString());
+                    cmt.postedDate = Convert.ToDateTime(string.IsNullOrEmpty(reader["cmt_PostedDate"].ToString()) ? "" : reader["cmt_PostedDate"].ToString());
+
+                    lstCmt.Add(cmt);
+                }
+                conn.Close();
+                return lstCmt;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
         #endregion
 
     }

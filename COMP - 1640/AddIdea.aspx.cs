@@ -100,12 +100,12 @@ namespace COMP___1640
 
         private void SendEmailToStaff(string title, string content)
         {
-            //check role if student
-            var user = (PersonalDetails)Session["Login"];
-            var role = new DataAccess().GetRoleById(user.roleId);
+            //check role if student - no need
+            //var user = (PersonalDetails)Session["Login"];
+            //var role = new DataAccess().GetRoleById(user.roleId);
 
-            if (role.Name.ToLower().Contains("student"))
-            {
+            //if (role.Name.ToLower().Contains("student"))
+            //{
                 SmtpClient client = new SmtpClient();
                 client.Port = 587;
                 client.Host = "smtp.gmail.com";
@@ -125,7 +125,7 @@ namespace COMP___1640
                 mailMessage.IsBodyHtml = true;
 
                 client.Send(mailMessage);
-            }
+            //}
         }
 
         private string MailBody(string title, string content, string mail)

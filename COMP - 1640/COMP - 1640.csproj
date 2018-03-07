@@ -113,6 +113,7 @@
     </Compile>
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\CommentUI.cs" />
     <Compile Include="Models\Idea.cs" />
     <Compile Include="Models\PersonalDetails.cs" />
     <Compile Include="Models\Role.cs" />
