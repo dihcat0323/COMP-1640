@@ -8,12 +8,15 @@
             var html = "";
             var c = JSON.parse(lst);
             for (var i = 0; i < c.length; i++) {
-                html += '<div class="media"><p class="pull-right"><small>' + c[i].postedDate + ' days ago</small></p><div class="media-body"><h4 class="media-heading user_name">' + c[i].userName + '</h4>' + c[i].Details + '</div></div>'
+                //html += '<div class="media"><p class="pull-right"><small>' + c[i].postedDate + ' days ago</small></p><div class="media-body"><h4 class="media-heading user_name">' + c[i].userName + '</h4>' + c[i].Details + '</div></div>'
+                html += '<li style="padding: 10px 0; border-top: 1px solid #e8e8e8;"><big><span class="user" style="margin-top: 5em; padding-top: 0;"><a href="#">' + c[i].userName + '</a></span></big><span class="content" style="display: block; margin-left: 60px;">' + c[i].Details + '</span><span class="timestamp" style="color: #777; display: block; margin-left: 60px;"><span>posted ' + c[i].postedDate + ' days ago</span></span></li>'
             }
 
             $("#lstComment").html(html);
         }
     </script>
+    <%--<li style="padding: 10px 0; border-top: 1px solid #e8e8e8;"><big><span class="user" style="margin-top: 5em; padding-top: 0;"><a href="#">' + c[i].userName + '</a></span></big><span class="content" style="display: block; margin-left: 60px;">' + c[i].Details + '</span><span class="timestamp" style="color: #777; display: block; margin-left: 60px;"><span>' + c[i].postedDate + ' days ago</span></span></li>--%>
+
     <div class="container body-content col-12">
         <div class="container">
             <div class="row">
@@ -59,8 +62,8 @@
                         <asp:Label ID="lblCmtCount" runat="server" />
                     </h3>
 
-                    <div class="form-group comment-list" id="lstComment">
-                    </div>
+                    <%--<div class="form-group comment-list" id="lstComment">
+                    </div>--%>
 
                     <div class="form-group">
                         <asp:TextBox ID="txtCmt" runat="server" CssClass="form-control" placecholder="Comment here..." />
@@ -69,6 +72,10 @@
                     <div class="form-group">
                         <asp:Button ID="btnSubmitCmt" runat="server" Text="Submit Comment" CssClass="btn" OnClick="btnSubmitCmt_Click" />
                     </div>
+
+                    <ol class="comments" style="list-style: none; padding: 0;" id="lstComment">
+                    </ol>
+
                 </div>
             </div>
         </div>

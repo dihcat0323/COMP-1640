@@ -16,32 +16,32 @@ namespace COMP___1640.DAL
         public PersonalDetails CheckLogIn(string email, string pass)
         {
             var query = string.Format("SELECT * FROM PersonalDetail WHERE p_Email = '{0}' AND p_Pass = '{1}'", email, pass);
+            var conn = Connect();
             try
             {
-                var conn = Connect();
                 conn.Open();
                 var cmd = new SqlCommand(query, conn);
                 var reader = cmd.ExecuteReader();
 
+                var u = new PersonalDetails();
+
                 while (reader.Read())
                 {
-                    return new PersonalDetails
-                    {
-                        Id = int.Parse(reader["p_ID"].ToString()),
-                        roleId = int.Parse(reader["r_ID"].ToString()),
-                        departmentId = int.Parse(reader["dp_ID"].ToString()),
-                        Name = reader["p_Name"].ToString(),
-                        Email = reader["p_Email"].ToString(),
-                        Pass = reader["p_Pass"].ToString(),
-                        Details = reader["p_Detail"].ToString()
-                    };
+                    u.Id = int.Parse(reader["p_ID"].ToString());
+                    u.roleId = int.Parse(reader["r_ID"].ToString());
+                    u.departmentId = int.Parse(reader["dp_ID"].ToString());
+                    u.Name = reader["p_Name"].ToString();
+                    u.Email = reader["p_Email"].ToString();
+                    u.Pass = reader["p_Pass"].ToString();
+                    u.Details = reader["p_Detail"].ToString();
                 }
 
                 conn.Close();
-                return null;
+                return u;
             }
             catch (Exception ex)
             {
+                conn.Close();
                 return null;
             }
         }
@@ -49,28 +49,30 @@ namespace COMP___1640.DAL
         public PersonalDetails GetUserById(int id)
         {
             var query = string.Format("SELECT * FROM PersonalDetail WHERE p_ID = {0}", id);
+            var conn = Connect();
             try
             {
-                var conn = Connect();
                 conn.Open();
 
                 var cmd = new SqlCommand(query, conn);
                 var reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
+                    var u = new PersonalDetails();
+
                     while (reader.Read())
                     {
-                        return new PersonalDetails
-                        {
-                            Id = int.Parse(reader["p_ID"].ToString()),
-                            roleId = int.Parse(reader["r_ID"].ToString()),
-                            departmentId = int.Parse(reader["dp_ID"].ToString()),
-                            Name = reader["p_Name"].ToString(),
-                            Email = reader["p_Email"].ToString(),
-                            Pass = reader["p_Pass"].ToString(),
-                            Details = reader["p_Detail"].ToString()
-                        };
+                        u.Id = int.Parse(reader["p_ID"].ToString());
+                        u.roleId = int.Parse(reader["r_ID"].ToString());
+                        u.departmentId = int.Parse(reader["dp_ID"].ToString());
+                        u.Name = reader["p_Name"].ToString();
+                        u.Email = reader["p_Email"].ToString();
+                        u.Pass = reader["p_Pass"].ToString();
+                        u.Details = reader["p_Detail"].ToString();
                     }
+
+                    conn.Close();
+                    return u;
                 }
 
                 conn.Close();
@@ -78,6 +80,7 @@ namespace COMP___1640.DAL
             }
             catch (Exception ex)
             {
+                conn.Close();
                 return null;
             }
         }
@@ -92,9 +95,11 @@ output INSERTED.i_ID
 VALUES ({0}, {1}, '{2}', '{3}', '{4}', {5}, {6}, '{7}', '{8}')",
 idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, idea.isAnonymous, idea.TotalViews, idea.PostedDate, idea.ClosureDate);
 
+            var conn = Connect();
+
             try
             {
-                var conn = Connect();
+
                 conn.Open();
 
                 var cmd = new SqlCommand(query, conn);
@@ -105,6 +110,7 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
             }
             catch (Exception ex)
             {
+                conn.Close();
                 return -1;
             }
         }
@@ -114,9 +120,10 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
             var idea = new Idea();
             var query = string.Format("SELECT * FROM Idea WHERE i_ID = {0}", id);
 
+            var conn = Connect();
+
             try
             {
-                var conn = Connect();
                 conn.Open();
 
                 var cmd = new SqlCommand(query, conn);
@@ -131,14 +138,15 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                     idea.DocumentLink = reader["DocumentLink"].ToString();
                     idea.isAnonymous = bool.Parse(reader["i_IsAnonymous"].ToString()) ? 1 : 0;
                     idea.TotalViews = int.Parse(reader["TotalViews"].ToString());
-                    idea.PostedDate = Convert.ToDateTime(String.IsNullOrEmpty(reader["i_PostedDate"].ToString()) ? "" : reader["i_PostedDate"].ToString());
-                    idea.ClosureDate = Convert.ToDateTime(String.IsNullOrEmpty(reader["i_ClosureDate"].ToString()) ? "" : reader["i_ClosureDate"].ToString());
+                    idea.PostedDate = Convert.ToDateTime(string.IsNullOrEmpty(reader["i_PostedDate"].ToString()) ? "" : reader["i_PostedDate"].ToString());
+                    idea.ClosureDate = Convert.ToDateTime(string.IsNullOrEmpty(reader["i_ClosureDate"].ToString()) ? "" : reader["i_ClosureDate"].ToString());
                 }
                 conn.Close();
                 return idea;
             }
             catch (Exception ex)
             {
+                conn.Close();
                 return null;
             }
         }
@@ -148,9 +156,10 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
             var lstIdea = new List<Idea>();
             var query = string.Format("SELECT * FROM Idea");
 
+            var conn = Connect();
+
             try
             {
-                var conn = Connect();
                 conn.Open();
 
                 var cmd = new SqlCommand(query, conn);
@@ -173,17 +182,19 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
 
                         lstIdea.Add(idea);
                     }
+
+                    conn.Close();
+                    return lstIdea;
                 }
                 else
                 {
+                    conn.Close();
                     return null;
                 }
-
-                conn.Close();
-                return lstIdea;
             }
             catch (Exception ex)
             {
+                conn.Close();
                 return null;
             }
         }
@@ -194,9 +205,11 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
         {
             var query = string.Format("SELECT * FROM Category");
             var lstCat = new List<Category>();
+
+            var conn = Connect();
+
             try
             {
-                var conn = Connect();
                 conn.Open();
 
                 var cmd = new SqlCommand(query, conn);
@@ -214,6 +227,7 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                         lstCat.Add(cat);
                     }
                     conn.Close();
+                    return lstCat;
                 }
                 else
                 {
@@ -223,18 +237,19 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
             }
             catch (Exception ex)
             {
+                conn.Close();
                 return null;
             }
-
-            return lstCat;
         }
 
         public Category GetCategoryById(int id)
         {
+            var c = new Category();
             var query = string.Format("SELECT * FROM Category WHERE c_ID = {0}", id);
+
+            var conn = Connect();
             try
             {
-                var conn = Connect();
                 conn.Open();
 
                 var cmd = new SqlCommand(query, conn);
@@ -243,13 +258,13 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                 {
                     while (reader.Read())
                     {
-                        return new Category
-                        {
-                            Id = int.Parse(reader["c_ID"].ToString()),
-                            Name = reader["c_Name"].ToString(),
-                            Description = reader["c_Description"].ToString()
-                        };
+                        c.Id = int.Parse(reader["c_ID"].ToString());
+                        c.Name = reader["c_Name"].ToString();
+                        c.Description = reader["c_Description"].ToString();
                     }
+
+                    conn.Close();
+                    return c;
                 }
 
                 conn.Close();
@@ -257,6 +272,7 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
             }
             catch (Exception ex)
             {
+                conn.Close();
                 return null;
             }
         }
@@ -265,10 +281,12 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
         #region Role
         public Role GetRoleById(int id)
         {
+            var r = new Role();
             var query = string.Format("SELECT * FROM Role WHERE r_ID = {0}", id);
+
+            var conn = Connect();
             try
             {
-                var conn = Connect();
                 conn.Open();
 
                 var cmd = new SqlCommand(query, conn);
@@ -277,13 +295,12 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                 {
                     while (reader.Read())
                     {
-                        return new Role
-                        {
-                            Id = int.Parse(reader["r_ID"].ToString()),
-                            Name = reader["r_Name"].ToString(),
-                            Description = reader["r_Description"].ToString()
-                        };
+                        r.Id = int.Parse(reader["r_ID"].ToString());
+                        r.Name = reader["r_Name"].ToString();
+                        r.Description = reader["r_Description"].ToString();
                     }
+                    conn.Close();
+                    return r;
                 }
 
                 conn.Close();
@@ -291,6 +308,7 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
             }
             catch (Exception ex)
             {
+                conn.Close();
                 return null;
             }
         }
@@ -325,9 +343,9 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
             var lstCmt = new List<Comment>();
             var query = string.Format("SELECT * FROM Comment WHERE I_ID = {0}", ideaId);
 
+            var conn = Connect();
             try
             {
-                var conn = Connect();
                 conn.Open();
 
                 var cmd = new SqlCommand(query, conn);
@@ -349,6 +367,7 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
             }
             catch (Exception ex)
             {
+                conn.Close();
                 return null;
             }
         }

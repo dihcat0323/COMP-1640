@@ -31,20 +31,21 @@ namespace COMP___1640
 
         private void LoadIdeaById(int id)
         {
+            var db = new DataAccess();
             //Get idea from DB
             var idea = new DataAccess().GetIdeaById(id);
 
             //Load idea to page
             if (idea != null && idea.Id > 0)
             {
-                var user = new DataAccess().GetUserById(idea.PersonalId);
+                var user = db.GetUserById(idea.PersonalId);
                 lbtnUser.InnerHtml = user.Name;
                 lblPostedDate.Text = "Posted " + new Common().CalculatePostedDate(idea.PostedDate) + " days ago";
                 lblTitle.InnerHtml = idea.Title;
                 lblContent.InnerHtml = idea.Details;
 
                 //Category Name
-                lblCategory.InnerHtml = new DataAccess().GetCategoryById(idea.CategoryId).Name;
+                lblCategory.InnerHtml = db.GetCategoryById(idea.CategoryId).Name;
                 lblDocumentLink.InnerHtml = string.IsNullOrEmpty(idea.DocumentLink) ? "No Link" : idea.DocumentLink;
                 lblAnonymous.InnerHtml = idea.isAnonymous == 0 ? "No" : "Yes";
                 lblTotalView.InnerHtml = idea.TotalViews.ToString();
@@ -56,8 +57,6 @@ namespace COMP___1640
             //user must login in order to view the comments, otherwise all the comments will not be displayed
             if (Session["Login"] != null)
             {
-                //Response.Redirect("Login.aspx");
-
                 var user = (PersonalDetails)Session["Login"];
 
                 var cmt = new DataAccess().GetCommentsByIdea(ideaId);
@@ -71,14 +70,15 @@ namespace COMP___1640
 
         private List<CommentUI> PopulateComments(List<Comment> lstCmt, int roleId)
         {
+            var db = new DataAccess();
             var lstCmtUi = new List<CommentUI>();
             //check role if "Student"
-            var loggedInRole = new DataAccess().GetRoleById(roleId);
+            var loggedInRole = db.GetRoleById(roleId);
 
             foreach (var x in lstCmt)
             {
                 var cmtUi = new CommentUI();
-                cmtUi.userName = x.isAnonymous ? "Anonymous" : new DataAccess().GetUserById(x.personId).Name;
+                cmtUi.userName = x.isAnonymous ? "Anonymous" : db.GetUserById(x.personId).Name;
                 cmtUi.postedDate = new Common().CalculatePostedDate(x.postedDate).ToString();
                 cmtUi.Details = x.Details;
 
@@ -99,8 +99,9 @@ namespace COMP___1640
         //check if the comment is submitted by "student" role
         private bool IsCommentedByStudent(int personalId)
         {
-            var user = new DataAccess().GetUserById(personalId);
-            var role = new DataAccess().GetRoleById(user.roleId);
+            var db = new DataAccess();
+            var user = db.GetUserById(personalId);
+            var role = db.GetRoleById(user.roleId);
 
             return role.Name.ToLower().Contains("student");
         }

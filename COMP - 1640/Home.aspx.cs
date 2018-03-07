@@ -16,14 +16,15 @@ namespace COMP___1640
 
         private void BindIdeasToGrid()
         {
-            var lstIdeas = new DataAccess().GetAllIdeas();
+            var db = new DataAccess();
+            var lstIdeas = db.GetAllIdeas();
             lstIdeas.Reverse();
             var lstIdeaUi = new List<IdeaUI>();
             foreach (var x in lstIdeas)
             {
                 var ideaUi = new IdeaUI();
                 ideaUi.ideaId = x.Id;
-                ideaUi.userName = new DataAccess().GetUserById(x.PersonalId).Name;
+                ideaUi.userName = db.GetUserById(x.PersonalId).Name;
                 ideaUi.ideaTitle = x.Title.Replace("\"", "'").Replace(Environment.NewLine, " ");
                 ideaUi.ideaContent = x.Details.Replace("\"", "'").Replace(Environment.NewLine, " ");
                 ideaUi.postedDate = new Common().CalculatePostedDate(x.PostedDate);
