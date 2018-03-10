@@ -8,7 +8,7 @@
         <div class="container col-12">
             <h1>Idea Submission</h1>
             <div class="form-group">
-                <label for="post_title">Tittle</label>
+                <label for="post_title">Title</label>
                 <asp:TextBox ID="txtTitle" runat="server" CssClass="form-control" />
             </div>
 
