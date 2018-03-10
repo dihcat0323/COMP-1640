@@ -57,7 +57,7 @@ namespace COMP___1640
 
             if (!ckbAgreeTerms.Checked)
             {
-                var script = "alert(\"ERROR: You cannot submit idea if you are not agree with the terms and conditions!!!\");";
+                var script = "alert(\"Sorry, you must accept the Terms & Conditions before submitting.\");";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
                 return;
             }
@@ -92,7 +92,7 @@ namespace COMP___1640
             }
             else
             {
-                var script = "alert(\"FAIL: Idea submitted failed!!!\");";
+                var script = "alert(\"FAILURE: Idea submission failed!!!\");";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
                 return;
             }
