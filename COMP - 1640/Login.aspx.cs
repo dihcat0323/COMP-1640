@@ -38,7 +38,7 @@ namespace COMP___1640
             }
             else
             {
-                var script = "alert(\"ERROR: email or password invalid!!!\");";
+                var script = "alert(\"ERROR: Email or password invalid!!!\");";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
             }
         }
