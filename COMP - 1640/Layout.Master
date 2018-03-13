@@ -19,7 +19,7 @@
     <form id="form1" runat="server">
         <header class="navbar navbar-fixed-top navbar-inverse header col-12">
             <div class="container">
-                <a href="Home.aspx" id="logo">No Mercy</a>
+                <a href="Topic.aspx" id="logo">No Mercy</a>
                 <nav>
                     <ul class="nav navbar-nav navbar-right">
                         <li><asp:LinkButton ID="lbtnUser" runat="server" Text="Login"/></li>

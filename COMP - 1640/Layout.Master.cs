@@ -12,7 +12,7 @@ namespace COMP___1640
             {
                 var p = (PersonalDetails)Session["Login"];
                 lbtnUser.Text = p.Name;
-                lbtnUser.Attributes.Add("href", "Home.aspx");
+                lbtnUser.Attributes.Add("href", "Topic.aspx");
             }
             else
             {

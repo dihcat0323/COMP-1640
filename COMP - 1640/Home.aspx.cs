@@ -13,83 +13,25 @@ namespace COMP___1640
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            //BindIdeasToGrid();
-        }
-
-        private void BindIdeasToGrid()
-        {
-            var db = new DataAccess();
-            var lstIdeas = db.GetAllIdeas();
-            lstIdeas.Reverse();
-            var lstIdeaUi = new List<IdeaUI>();
-            foreach (var x in lstIdeas)
+            if (Session["TopicId"] == null)
             {
-                var ideaUi = new IdeaUI();
-                ideaUi.ideaId = x.Id;
-                ideaUi.userName = db.GetUserById(x.PersonalId).Name;
-                ideaUi.ideaTitle = x.Title.Replace("\"", "'").Replace(Environment.NewLine, " ");
-                ideaUi.ideaContent = x.Details.Replace("\"", "'").Replace(Environment.NewLine, " ");
-                ideaUi.postedDate = new Common().CalculatePostedDate(x.PostedDate);
-
-                lstIdeaUi.Add(ideaUi);
+                Response.Redirect("Topic.aspx");
             }
+            else
+            {
+                var tpId = -1;
+                int.TryParse(Session["TopicId"].ToString(), out tpId);
 
-            var jsonSerialiser = new JavaScriptSerializer();
-            var script = "bindIdeasToPage('" + jsonSerialiser.Serialize(lstIdeaUi) + "')";
-            ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
-
-            #region [old logic] - use Backend to generate html page - [BACKUP]
-            //            var list = "";
-
-            //            if (lstIdeas != null && lstIdeas.Count > 0)
-            //            {
-            //                foreach (var x in lstIdeas)
-            //                {
-            //                    list += string.Format(@"
-            //<div class='col-12'>
-            //	<div class='well'>
-            //		<p>
-            //            <a href='#'>{0}</a> posted:
-            //        </p>
-            //		<h2>
-            //            <a href='#' onclick='ideaOnclick(this)' ideaId='{4}'>{1}</a>
-            //        </h2>
-            //		<p>{2}</p>
-            //		<span class='timestamp'>
-            //			posted {3} days ago.
-            //		</span>
-            //	</div>
-            //</div>
-            //", new DataAccess().GetUserById(x.PersonalId).Name, x.Title, x.Details, new Common().CalculatePostedDate(x.PostedDate), x.Id);
-            //                }
-            //            }
-
-
-
-            //            var html = string.Format(@"
-            //<div class='container body-content col-12'>
-
-            //	<div class='col-12'>
-            //		<div class='form-group input-group'>
-            //			<input type='text' name='search' id='search' placeholder='Search post' class='form-control' />
-            //			<span class='input-group-btn'>
-            //				<input type='submit' value='Search' class='btn btn-default' data-disable-with='Search' />
-            //			</span>
-            //		</div>
-            //	</div>
-            //	<p class='button'>
-            //		<a href='AddIdea.aspx'>New Post</a>
-            //	</p>
-
-
-            //	<div class='center col-12' id='lstIdeas'>
-            //        {0}
-            //	</div>
-            //</div>
-            //", list);
-
-            //            Response.Write(html);
-            #endregion
+                if (tpId == -1)
+                {
+                    Response.Redirect("Topic.aspx");
+                }
+                else
+                {
+                    var tp = new DataAccess().GetTopicById(tpId);
+                    lblTopicName.Text = tp.Name;
+                }
+            }
         }
 
         [System.Web.Services.WebMethod]
@@ -98,7 +40,19 @@ namespace COMP___1640
             var db = new DataAccess();
             var ideaEntity = new IdeaEntity();
 
-            var lstIdeas = db.GetAllIdeas();
+            var tpId = -1;
+            Page obj = new Page();
+            int.TryParse(obj.Session["TopicId"].ToString(), out tpId);
+            if (tpId == -1)
+            {
+                return null;
+            }
+
+            var lstIdeas = db.GetIdeasByTopic(tpId);
+            if (lstIdeas == null || lstIdeas.Count == 0)
+            {
+                return null;
+            }
 
             var lstIdeaUi = new List<IdeaUI>();
             foreach (var x in lstIdeas)
@@ -108,7 +62,7 @@ namespace COMP___1640
                 ideaUi.userName = db.GetUserById(x.PersonalId).Name;
                 ideaUi.ideaTitle = x.Title.Replace("\"", "'").Replace(Environment.NewLine, " ");
                 ideaUi.ideaContent = x.Details.Replace("\"", "'").Replace(Environment.NewLine, " ");
-                ideaUi.postedDate = new Common().CalculatePostedDate(x.PostedDate);
+                ideaUi.postedDate = new Common().CalculateDateRange(x.PostedDate);
 
                 lstIdeaUi.Add(ideaUi);
             }

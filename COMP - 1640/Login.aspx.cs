@@ -10,7 +10,7 @@ namespace COMP___1640
         {
             if (Session["Login"] != null)
             {
-                Response.Redirect("Home.aspx");
+                Response.Redirect("Topic.aspx");
             }
         }
 
@@ -34,7 +34,7 @@ namespace COMP___1640
                 Session["Login"] = p;
                 
                 //redirect to Home
-                Response.Redirect("Home.aspx");
+                Response.Redirect("Topic.aspx");
             }
             else
             {

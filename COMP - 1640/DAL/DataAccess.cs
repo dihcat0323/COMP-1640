@@ -9,8 +9,7 @@ namespace COMP___1640.DAL
     {
         public static SqlConnection Connect()
         {
-            //return new SqlConnection(WebConfigurationManager.AppSettings["ConnectionString"]);
-            return new SqlConnection("Data Source=.;Initial Catalog=IdeasCampaignManager;Integrated Security=False;User Id=sa;Password=abc@12345;MultipleActiveResultSets=True");
+            return new SqlConnection("Data Source=.;Initial Catalog=IdeasCampaignManager_ver2;Integrated Security=False;User Id=sa;Password=abc@12345;MultipleActiveResultSets=True");
         }
         #region PersonalDetail
         public PersonalDetails CheckLogIn(string email, string pass)
@@ -86,20 +85,128 @@ namespace COMP___1640.DAL
         }
         #endregion
 
-        #region Idea
-        public int AddIdea(Idea idea)
+        #region Topic
+        public int AddTopic(Topic tp)
         {
+            //Check logic Closure Date and Final Closure Date
+            if ((DateTime.Parse(tp.ClosureDate.ToString()) - DateTime.Parse(tp.FinalClosureDate.ToString())).TotalDays > 0)
+            {
+                return -1;
+            }
+
+            if ((DateTime.Parse(tp.PostedDate.ToString()) - DateTime.Parse(tp.ClosureDate.ToString())).TotalDays > 0)
+            {
+                return -1;
+            }
+
             var id = -1;
-            var query = string.Format(@"INSERT INTO Idea (c_ID, p_ID, i_Title, i_Details, DocumentLink, i_IsAnonymous, TotalViews, i_PostedDate, i_ClosureDate) 
-output INSERTED.i_ID 
-VALUES ({0}, {1}, '{2}', '{3}', '{4}', {5}, {6}, '{7}', '{8}')",
-idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, idea.isAnonymous, idea.TotalViews, idea.PostedDate, idea.ClosureDate);
+            var query = string.Format(@"INSERT INTO Topic (t_Name, t_Details, t_PostedDate, t_ClosureDate, t_FinalClosureDate)
+output INSERTED.t_ID
+VALUES ('{0}', '{1}', '{2}', '{3}', '{4}')",
+tp.Name, tp.Details, tp.PostedDate, tp.ClosureDate, tp.FinalClosureDate);
 
             var conn = Connect();
 
             try
             {
+                conn.Open();
 
+                var cmd = new SqlCommand(query, conn);
+                id = (int)cmd.ExecuteScalar();
+
+                conn.Close();
+                return id;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return -1;
+            }
+        }
+
+        public Topic GetTopicById(int id)
+        {
+            var tp = new Topic();
+            var query = string.Format("SELECT * FROM Topic WHERE t_ID = {0}", id);
+
+            var conn = Connect();
+
+            try
+            {
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    tp.Id = id;
+                    tp.Name = reader["t_Name"].ToString();
+                    tp.Details = reader["t_Details"].ToString();
+                    tp.PostedDate = Convert.ToDateTime(string.IsNullOrEmpty(reader["t_PostedDate"].ToString()) ? "" : reader["t_PostedDate"].ToString());
+                    tp.ClosureDate = Convert.ToDateTime(string.IsNullOrEmpty(reader["t_ClosureDate"].ToString()) ? "" : reader["t_ClosureDate"].ToString());
+                    tp.FinalClosureDate = Convert.ToDateTime(string.IsNullOrEmpty(reader["t_FinalClosureDate"].ToString()) ? "" : reader["t_FinalClosureDate"].ToString());
+                }
+
+                conn.Close();
+                return tp;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return null;
+            }
+        }
+
+        public List<Topic> GetAllTopics()
+        {
+            var lstTp = new List<Topic>();
+            var query = string.Format("SELECT * FROM Topic");
+
+            var conn = Connect();
+
+            try
+            {
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    var tp = new Topic();
+                    tp.Id = int.Parse(reader["t_ID"].ToString());
+                    tp.Name = reader["t_Name"].ToString();
+                    tp.Details = reader["t_Details"].ToString();
+                    tp.PostedDate = Convert.ToDateTime(string.IsNullOrEmpty(reader["t_PostedDate"].ToString()) ? "" : reader["t_PostedDate"].ToString());
+                    tp.ClosureDate = Convert.ToDateTime(string.IsNullOrEmpty(reader["t_ClosureDate"].ToString()) ? "" : reader["t_ClosureDate"].ToString());
+                    tp.FinalClosureDate = Convert.ToDateTime(string.IsNullOrEmpty(reader["t_FinalClosureDate"].ToString()) ? "" : reader["t_FinalClosureDate"].ToString());
+
+                    lstTp.Add(tp);
+                }
+
+                conn.Close();
+                return lstTp;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return null;
+            }
+        }
+        #endregion
+
+        #region Idea
+        public int AddIdea(Idea idea)
+        {
+            var id = -1;
+            var query = string.Format(@"INSERT INTO Idea (c_ID, p_ID, i_Title, i_Details, DocumentLink, i_IsAnonymous, TotalViews, i_PostedDate) 
+output INSERTED.i_ID 
+VALUES ({0}, {1}, '{2}', '{3}', '{4}', {5}, {6}, '{7}')",
+idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, idea.isAnonymous, idea.TotalViews, idea.PostedDate);
+
+            var conn = Connect();
+
+            try
+            {
                 conn.Open();
 
                 var cmd = new SqlCommand(query, conn);
@@ -139,7 +246,7 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                     idea.isAnonymous = bool.Parse(reader["i_IsAnonymous"].ToString()) ? 1 : 0;
                     idea.TotalViews = int.Parse(reader["TotalViews"].ToString());
                     idea.PostedDate = Convert.ToDateTime(string.IsNullOrEmpty(reader["i_PostedDate"].ToString()) ? "" : reader["i_PostedDate"].ToString());
-                    idea.ClosureDate = Convert.ToDateTime(string.IsNullOrEmpty(reader["i_ClosureDate"].ToString()) ? "" : reader["i_ClosureDate"].ToString());
+                    //idea.ClosureDate = Convert.ToDateTime(string.IsNullOrEmpty(reader["i_ClosureDate"].ToString()) ? "" : reader["i_ClosureDate"].ToString());
                 }
                 conn.Close();
                 return idea;
@@ -151,10 +258,10 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
             }
         }
 
-        public List<Idea> GetAllIdeas()
+        public List<Idea> GetIdeasByTopic(int tpId)
         {
             var lstIdea = new List<Idea>();
-            var query = string.Format("SELECT * FROM Idea");
+            var query = string.Format("SELECT * FROM Idea WHERE t_ID = {0}", tpId);
 
             var conn = Connect();
 
@@ -177,8 +284,7 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                         idea.DocumentLink = reader["DocumentLink"].ToString();
                         idea.isAnonymous = bool.Parse(reader["i_IsAnonymous"].ToString()) ? 1 : 0;
                         idea.TotalViews = int.Parse(reader["TotalViews"].ToString());
-                        idea.PostedDate = Convert.ToDateTime(String.IsNullOrEmpty(reader["i_PostedDate"].ToString()) ? "" : reader["i_PostedDate"].ToString());
-                        idea.ClosureDate = Convert.ToDateTime(String.IsNullOrEmpty(reader["i_ClosureDate"].ToString()) ? "" : reader["i_ClosureDate"].ToString());
+                        idea.PostedDate = Convert.ToDateTime(string.IsNullOrEmpty(reader["i_PostedDate"].ToString()) ? "" : reader["i_PostedDate"].ToString());
 
                         lstIdea.Add(idea);
                     }
@@ -317,6 +423,8 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
         #region Comment
         public bool AddComment(Comment cmt)
         {
+            
+
             var stt = false;
             var query = string.Format("INSERT INTO Comment (I_ID, p_ID, cmt_Detail, cmt_IsAnonymous, cmt_PostedDate) VALUES ({0}, {1}, '{2}', '{3}', '{4}')",
                 cmt.ideaId, cmt.personId, cmt.Details, cmt.isAnonymous.ToString().ToLower(), cmt.postedDate);

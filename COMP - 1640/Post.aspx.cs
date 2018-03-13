@@ -40,7 +40,7 @@ namespace COMP___1640
             {
                 var user = db.GetUserById(idea.PersonalId);
                 lbtnUser.InnerHtml = user.Name;
-                lblPostedDate.Text = "Posted " + new Common().CalculatePostedDate(idea.PostedDate) + " days ago";
+                lblPostedDate.Text = "Posted " + new Common().CalculateDateRange(idea.PostedDate) + " days ago";
                 lblTitle.InnerHtml = idea.Title;
                 lblContent.InnerHtml = idea.Details;
 
@@ -79,7 +79,7 @@ namespace COMP___1640
             {
                 var cmtUi = new CommentUI();
                 cmtUi.userName = x.isAnonymous ? "Anonymous" : db.GetUserById(x.personId).Name;
-                cmtUi.postedDate = new Common().CalculatePostedDate(x.postedDate).ToString();
+                cmtUi.postedDate = new Common().CalculateDateRange(x.postedDate).ToString();
                 cmtUi.Details = x.Details;
 
                 //logic check for "Only student can view comments submitted by other students. Staff can view all type of comments"
@@ -127,6 +127,25 @@ namespace COMP___1640
                 Response.Redirect("Login.aspx");
             }
 
+            if (Session["TopicId"] == null)
+            {
+                Response.Redirect("Topic.aspx");
+            }
+
+            var tpId = -1;
+            int.TryParse(Session["TopicId"].ToString(), out tpId);
+            if (tpId == -1)
+            {
+                Response.Redirect("Topic.aspx");
+            }
+
+            if (!CheckFinalClosureDate(tpId))
+            {
+                var script = "alert(\"You cannot submit the comment if the Final Closure Date already passed!!!\");";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
+                return;
+            }
+
             //add comment
             var ideaId = int.Parse(Session["IdeaId"].ToString());
             var user = (PersonalDetails)Session["Login"];
@@ -144,6 +163,17 @@ namespace COMP___1640
             {
                 Response.Redirect("Post.aspx");
             }
+        }
+
+        public bool CheckFinalClosureDate(int topicId)
+        {
+            var tp = new DataAccess().GetTopicById(topicId);
+            if (tp == null)
+            {
+                return false;
+            }
+
+            return new Common().CalculateDateRange(tp.FinalClosureDate) <= 0;
         }
     }
 }

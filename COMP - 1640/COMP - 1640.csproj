@@ -68,12 +68,14 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DB Script\db_ver2.sql" />
     <Content Include="Home.aspx" />
     <Content Include="packages.config" />
     <Content Include="Layout.Master" />
     <Content Include="Login.aspx" />
     <Content Include="Post.aspx" />
     <Content Include="AddIdea.aspx" />
+    <Content Include="Topic.aspx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -96,6 +98,7 @@
     <Compile Include="DAL\Common.cs" />
     <Compile Include="DAL\DataAccess.cs" />
     <Compile Include="Entity\IdeaEntity.cs" />
+    <Compile Include="Entity\TopicEntity.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -120,6 +123,8 @@
     <Compile Include="Models\IdeaUI.cs" />
     <Compile Include="Models\PersonalDetails.cs" />
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\Topic.cs" />
+    <Compile Include="Models\TopicUI.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -141,6 +146,13 @@
     </Compile>
     <Compile Include="AddIdea.aspx.designer.cs">
       <DependentUpon>AddIdea.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Topic.aspx.cs">
+      <DependentUpon>Topic.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Topic.aspx.designer.cs">
+      <DependentUpon>Topic.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

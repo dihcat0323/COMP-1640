@@ -12,10 +12,8 @@ namespace COMP___1640
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["Login"] == null)
+            if (Session["Login"] == null || Session["TopicId"] == null)
             {
-                var script = "alert(\"ERROR: You must Login first!!!\");";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
                 Response.Redirect("Login.aspx");
             }
 
@@ -62,19 +60,29 @@ namespace COMP___1640
                 return;
             }
 
-            //populate idea to add to DB
+
             var p = (PersonalDetails)Session["Login"];
+            var tpId = int.Parse(Session["TopicId"].ToString());
+            //Only add new Idea if not yet pass the Closure Date
+            if (!CheckClosureDate(tpId))
+            {
+                var script = "alert(\"ERROR: You cannot submit idea when the Closure Date already passed!!!\");";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
+                return;
+            }
+
+            //populate idea to add to DB
             var idea = new Idea
             {
                 CategoryId = int.Parse(ddlCatgeory.SelectedItem.Value),
+                topicId = tpId,
                 PersonalId = p.Id,
                 Title = title.Replace("'", "\""),
                 Details = content.Replace("'", "\""),
                 DocumentLink = "", //TODO:
                 isAnonymous = ckbAnonymous.Checked ? 1 : 0,
                 TotalViews = 0,
-                ClosureDate = DateTime.Today.AddDays(10), //TODO: make admin able to change the closure date
-                PostedDate = DateTime.Today//TODO:
+                PostedDate = DateTime.Today
             };
 
             var id = new DataAccess().AddIdea(idea);
@@ -96,6 +104,17 @@ namespace COMP___1640
                 ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
                 return;
             }
+        }
+
+        private bool CheckClosureDate(int topicId)
+        {
+            var tp = new DataAccess().GetTopicById(topicId);
+            if (tp == null)
+            {
+                return false;
+            }
+
+            return new Common().CalculateDateRange(tp.ClosureDate) <= 0;
         }
 
         private void SendEmailToStaff(string title, string content)
@@ -124,7 +143,14 @@ namespace COMP___1640
             mailMessage.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
             mailMessage.IsBodyHtml = true;
 
-            client.Send(mailMessage);
+            try
+            {
+                client.Send(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                return;
+            }
             //}
         }
 
