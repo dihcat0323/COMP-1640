@@ -14,7 +14,25 @@ namespace COMP___1640
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["Login"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
+            else
+            {
+                //Check if account is Admin role
+                var user = (PersonalDetails)Session["Login"];
+                var role = new DataAccess().GetRoleById(user.roleId);
 
+                if (role.Name.Contains("Admin"))
+                {
+
+                }
+                else
+                {
+                    Response.Redirect("Topic.aspx");
+                }
+            }
         }
 
         [System.Web.Services.WebMethod]

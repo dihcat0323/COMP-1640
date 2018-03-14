@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="TopicMng.aspx.cs" Inherits="COMP___1640.WebForm7" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="UserMng.aspx.cs" Inherits="COMP___1640.WebForm8" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -8,11 +8,11 @@
         var totalPage = 0;
 
         $(document).ready(function () {
-            LoadTopics(0);
+            Loadusers(0);
 
             $('#last-page').click(function () {
                 currentPage = totalPage - 1;
-                LoadTopics(currentPage);
+                Loadusers(currentPage);
             });
 
             $('#next-page').click(function () {
@@ -20,30 +20,30 @@
                 if (currentPage == totalPage) {
                     currentPage = currentPage - 1;
                 } else {
-                    LoadTopics(currentPage);
+                    Loadusers(currentPage);
                 }
             });
 
             $('#previous-page').click(function () {
                 currentPage = currentPage - 1;
-                LoadTopics(currentPage);
+                Loadusers(currentPage);
             });
 
             $('#first-page').click(function () {
                 currentPage = 0;
-                LoadTopics(currentPage);
+                Loadusers(currentPage);
             });
 
             $('#list-page').on('change', function () {
                 currentPage = $('#list-page option:selected').val();
                 currentPage = parseInt(currentPage);
-                LoadTopics(currentPage);
+                Loadusers(currentPage);
             });
 
         });
 
-        function LoadTopics(page) {
-            var pageUrl = '<%=ResolveUrl("TopicMng.aspx")%>';
+        function Loadusers(page) {
+            var pageUrl = '<%=ResolveUrl("UserMng.aspx")%>';
             var currentPage = page;
 
             $.ajax({
@@ -58,7 +58,10 @@
                 async: false,
                 success: function (data) {
                     if (data.d) {
-                        bindTopics(data.d.ListTopics);
+                        bindusers(data.d.ListUsers);
+                        bindRole(data.d.ListRoles);
+                        bindDepartment(data.d.ListDepartment);
+
                         totalPage = data.d.TotalPage;
                         $('#list-page option').remove();
                         for (var j = 0; j < totalPage; j++) {
@@ -78,46 +81,61 @@
             });
         }
 
-        function bindTopics(lst) {
+        function bindusers(lst) {
             var html = "";
             $.each(lst, function (index, obj) {
                 html += "<tr>";
                 html += "<td>" + obj.Id + "</td>";
-                html += "<td><a href='#'>" + obj.Name + "</a></td>";
+                html += "<td>" + obj.roleName + "</td>";
+                html += "<td>" + obj.departmentName + "</td>";
+                html += "<td>" + obj.Name + "</td>";
+                html += "<td>" + obj.Email + "</td>";
                 html += "<td>...</td>";
-                html += "<td>" + obj.PostedDate.split(' ')[0] + "</td>";
-                html += "<td>" + obj.ClosureDate.split(' ')[0] + "</td>";
-                html += "<td>" + obj.FinalClosureDate.split(' ')[0] + "</td>";
-                html += "<td><a href='#' onclick='TopicOnclick(this)' TopicId='" + obj.Id + "'>Edit Item</a></td>";
+                html += "<td><a href='#' onclick='userOnclick(this)' userId='" + obj.Id + "'>Edit Item</a></td>";
                 html += "</tr>";
             });
 
-            $("#lstTopics").html(html);
+            $("#lstUsers").html(html);
         }
 
-        function TopicOnclick(lnk) {
-            var id = lnk.getAttribute('TopicId');
-            var pageUrl = '<%=ResolveUrl("TopicMng.aspx")%>';
+        function bindRole(lst) {
+            var html = "";
+            $.each(lst, function (index, obj) {
+                html += "<option value='" + obj.Id + "'>" + obj.Name + "</option>";
+            });
+
+            $("#lstRoles").html(html);
+        }
+
+        function bindDepartment(lst) {
+            var html = "";
+            $.each(lst, function (index, obj) {
+                html += "<option value='" + obj.Id + "'>" + obj.Name + "</option>";
+            });
+
+            $("#lstDepartments").html(html);
+        }
+
+        function userOnclick(lnk) {
+            var id = lnk.getAttribute('userId');
+            var pageUrl = '<%=ResolveUrl("UserMng.aspx")%>';
+
             $.ajax({
                 type: "POST",
-                url: pageUrl + "/TopicClicked",
+                url: pageUrl + "/userClicked",
                 data: JSON.stringify({
                     'id': id
                 }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (data) {
+                    $("#lstRoles").val(data.d.roleId).change();
+                    $("#lstDepartments").val(data.d.departmentId).change();
                     $('#txtName').val(data.d.Name);
-                    $('#txtName').attr("TopicId", data.d.Id);
-                    $('#txtName').prop("disabled", true);
-
-                    $('#txtDescription').val(data.d.Details);
-                    $('#txtDescription').prop("disabled", true);
-
-                    $('#dtPosted').val(data.d.PostedDate);
-
-                    $('#dtClosure').val(data.d.ClosureDate);
-                    $('#dtFinal').val(data.d.FinalClosureDate);
+                    $('#txtName').attr('userId', data.d.Id);
+                    $('#txtEmail').val(data.d.Email);
+                    $('#txtPass').val(data.d.Pass);
+                    $('#txtDetails').val(data.d.Details);
                 },
                 failure: function (errMsg) {
                     alert(errMsg);
@@ -125,55 +143,45 @@
             });
         }
 
-        function AddTopic() {
-            var id = $('#txtName').attr("TopicId");
-            var name = $('#txtName').val();
-            var details = $('#txtDescription').val();
-            //var posted = $('#dtPosted').val();
-            var closure = $('#dtClosure').val();
-            var final = $('#dtFinal').val();
+        function AddUser() {
+            var id = $('#txtName').attr("userId");
+            var rId = $("#lstRoles").val();
+            var dpId = $("#lstDepartments").val();
+            var name = $("#txtName").val();
+            var email = $("#txtEmail").val();
+            var pass = $("#txtPass").val();
+            var details = $("#txtDetails").val();
 
-            var pageUrl = '<%=ResolveUrl("TopicMng.aspx")%>';
+            var pageUrl = '<%=ResolveUrl("UserMng.aspx")%>';
 
             if (typeof (id) !== 'undefined') {
                 alert("[ERROR]: the item was selected to be EDITED, not to be INSERTED!!!");
                 return;
             }
 
-            if (name === "" || closure === "" || final === "") {
-                alert("ERROR: Topic Name, Closure Date and Final Closure Date are required!!!");
-                return;
-            }
-
-            //validate Closure vs Final
-            var dclosure = new Date(closure);
-            var dfinal = new Date(final);
-            if (dfinal < dclosure) {
-                alert("ERROR: Final Closure Date cannot be earlier than Closure Date!!!");
-                return;
-            }
-
-            if (dfinal < new Date() || dclosure < new Date()) {
-                alert("ERROR: Closure Date and Final Closure Date cannot be earlier than today!!!");
+            if (rId === "" || dpId === "" || name === "" || email === "" || pass === "") {
+                alert("ERROR: user Name, Email and Pass are required!!!");
                 return;
             }
 
             $.ajax({
                 type: "POST",
-                url: pageUrl + "/Client_AddTopic",
+                url: pageUrl + "/Client_Adduser",
                 data: JSON.stringify({
+                    'rId': rId,
+                    'dpId': dpId,
                     'name': name,
-                    'details': details,
-                    'closure': closure,
-                    'final': final
+                    'email': email,
+                    'pass': pass,
+                    'details': details
                 }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (data) {
                     if (!data.d) {
-                        alert("ERROR: Cannot insert the Topic into the database!!!");
+                        alert("ERROR: Cannot insert the user into the database!!!");
                     } else {
-                        alert("SUCCESS: New Topic successfully inserted into the database!!!");
+                        alert("SUCCESS: New user successfully inserted into the database!!!");
                     }
                 },
                 failure: function (errMsg) {
@@ -182,43 +190,39 @@
             });
         }
 
-        function EditTopic() {
-            var id = $('#txtName').attr("TopicId");
-            var closure = $('#dtClosure').val();
-            var final = $('#dtFinal').val();
-            var pageUrl = '<%=ResolveUrl("TopicMng.aspx")%>';
+        function EditUser() {
+            var id = $('#txtName').attr("userId");
+            var pageUrl = '<%=ResolveUrl("UserMng.aspx")%>';
 
             if (typeof (id) === "undefined") {
-                alert("[ERROR]: No Topic was selected to be edited!!!");
+                alert("[ERROR]: No user was selected to be edited!!!");
                 return;
             }
+            var rId = $("#lstRoles").val();
+            var dpId = $("#lstDepartments").val();
+            var name = $("#txtName").val();
+            var email = $("#txtEmail").val();
+            var pass = $("#txtPass").val();
+            var details = $("#txtDetails").val();
 
-            //validate Closure vs Final
-            var dclosure = new Date(closure);
-            var dfinal = new Date(final);
-            if (dfinal < dclosure) {
-                alert("ERROR: Final Closure Date cannot be earlier than Closure Date!!!");
-                return;
-            }
-
-            if (dfinal < new Date() || dclosure < new Date()) {
-                alert("ERROR: Closure Date and Final Closure Date cannot be earlier than today!!!");
-                return;
-            }
 
             $.ajax({
                 type: "POST",
-                url: pageUrl + "/Client_UpdateTopic",
+                url: pageUrl + "/Client_Updateuser",
                 data: JSON.stringify({
                     'id': id,
-                    'closure': closure,
-                    'final': final
+                    'rId': rId,
+                    'dpId': dpId,
+                    'name': name,
+                    'email': email,
+                    'pass': pass,
+                    'details': details
                 }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (data) {
                     if (!data.d) {
-                        alert("[ERROR]: Failed when update Topic in DB!!!");
+                        alert("[ERROR]: Failed when update user in DB!!!");
                     } else {
                         alert("[SUCCESS]: Updated successfully!!!");
                     }
@@ -262,12 +266,11 @@
         }
     </script>
 
-
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    List of Topics
+                    List of Users
                 </div>
                 <div class="panel-body">
                     <div id="" class="form-inline dt-bootstrap no-footer">
@@ -277,15 +280,15 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Topic Name</th>
+                                            <th>Role Name</th>
+                                            <th>Department Name</th>
+                                            <th>User Name</th>
+                                            <th>Email</th>
                                             <th>Details</th>
-                                            <th>Posted Date</th>
-                                            <th>Closure Date</th>
-                                            <th>Final Closure Date</th>
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="lstTopics">
+                                    <tbody id="lstUsers">
                                     </tbody>
                                 </table>
                             </div>
@@ -314,33 +317,39 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Topic Details
+                    User Details
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
-                        <label>Topic Name</label>
+                        <label>Role</label>
+                        <select class="form-control input-sm" id="lstRoles">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Department</label>
+                        <select class="form-control input-sm" id="lstDepartments">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>User Name</label>
                         <input type="text" id="txtName" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label>Descriptions</label>
-                        <textarea id="txtDescription" class="form-control" rows="3"></textarea>
+                        <label>Email</label>
+                        <input type="text" id="txtEmail" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label>Posted Date</label>
-                        <input type="date" id="dtPosted" class="form-control" disabled="true" />
+                        <label>Pass</label>
+                        <input type="Text" id="txtPass" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label>Closure Date</label>
-                        <input type="date" id="dtClosure" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label>Final Date</label>
-                        <input type="date" id="dtFinal" class="form-control" />
+                        <label>Details</label>
+                        <textarea id="txtDetails" class="form-control" rows="3"></textarea>
                     </div>
 
                     <div style="text-align: center">
-                        <button id="btnAddTopic" class="btn btn-success" onclick="AddTopic()">Add New Topic</button>
-                        <button id="btnEditTopic" class="btn btn-warning" onclick="EditTopic()">Edit Topic</button>
+                        <button id="btnAddUser" class="btn btn-success" onclick="AddUser()">Add New User</button>
+                        <button id="btnEditUser" class="btn btn-warning" onclick="EditUser()">Edit User</button>
                     </div>
                 </div>
             </div>

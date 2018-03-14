@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="Category.aspx.cs" Inherits="COMP___1640.WebForm6" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -177,65 +178,53 @@
     </script>
 
     <div class="row">
-        <aside class="col-lg-3">
-            <ul class="nav nav-pills nav-stacked">
-                <li class="dropdown-header">Navigation</li>
-                <li><a href="#">Comments</a></li>
-                <li><a href="#">Posts</a></li>
-                <li><a href="#">Tags</a></li>
-                <li><a href="#">Users</a></li>
-            </ul>
-        </aside>
-
-        <div class="col-lg-9">
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        List of Categorys
-                    </div>
-                    <div class="panel-body">
-                        <div id="" class="form-inline dt-bootstrap no-footer">
-                            <div class="row" style="margin-top: 10px">
-                                <div class="col-sm-12">
-                                    <table class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Category Name</th>
-                                                <th>Description</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="lstCategorys">
-                                        </tbody>
-                                    </table>
-                                </div>
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    List of Categorys
+                </div>
+                <div class="panel-body">
+                    <div id="" class="form-inline dt-bootstrap no-footer">
+                        <div class="row" style="margin-top: 10px">
+                            <div class="col-sm-12">
+                                <table class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Category Name</th>
+                                            <th>Description</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="lstCategorys">
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="col-lg-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Category Details
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Category Details
+                </div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label>Category Name</label>
+                        <input type="text" id="txtName" class="form-control" />
                     </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <label>Category Name</label>
-                            <input type="text" id="txtName" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label>Descriptions</label>
-                            <textarea id="txtDescription" class="form-control" rows="3"></textarea>
-                        </div>
+                    <div class="form-group">
+                        <label>Descriptions</label>
+                        <textarea id="txtDescription" class="form-control" rows="3"></textarea>
+                    </div>
 
-                        <div style="text-align: center">
-                            <button id="btnAddCategory" class="btn btn-success" onclick="AddCategory()">Add New Category</button>
-                            <button id="btnEditCategory" class="btn btn-warning" onclick="EditCategory()">Edit Category</button>
-                            <button id="btnDeleteCategory" class="btn btn-danger" onclick="DeleteCategory()">Delete Category</button>
-                        </div>
+                    <div style="text-align: center">
+                        <button id="btnAddCategory" class="btn btn-success" onclick="AddCategory()">Add New Category</button>
+                        <button id="btnEditCategory" class="btn btn-warning" onclick="EditCategory()">Edit Category</button>
+                        <button id="btnDeleteCategory" class="btn btn-danger" onclick="DeleteCategory()">Delete Category</button>
                     </div>
                 </div>
             </div>

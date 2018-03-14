@@ -83,6 +83,97 @@ namespace COMP___1640.DAL
                 return null;
             }
         }
+
+        public List<PersonalDetails> GetAllUsers()
+        {
+            var lst = new List<PersonalDetails>();
+
+            var query = string.Format("SELECT * FROM PersonalDetail");
+
+            var conn = Connect();
+
+            try
+            {
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    var tp = new PersonalDetails();
+                    tp.Id = int.Parse(reader["p_ID"].ToString());
+                    tp.roleId = int.Parse(reader["r_ID"].ToString());
+                    tp.departmentId = int.Parse(reader["dp_ID"].ToString());
+                    tp.Name = reader["p_Name"].ToString();
+                    tp.Email = reader["p_Email"].ToString();
+                    tp.Pass = reader["p_Pass"].ToString();
+                    tp.Details = reader["p_Detail"].ToString();
+
+                    lst.Add(tp);
+                }
+
+                conn.Close();
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return null;
+            }
+        }
+
+        public int AddUser(PersonalDetails u)
+        {
+            var id = -1;
+
+            var query = string.Format(@"INSERT INTO PersonalDetail(r_ID, dp_ID, p_Name, p_Email, p_Pass, p_Detail)
+output INSERTED.p_ID
+VALUES ({0}, {1}, '{2}', '{3}', '{4}', '{5}')",
+u.roleId, u.departmentId, u.Name, u.Email, u.Pass, u.Details);
+
+            var conn = Connect();
+
+            try
+            {
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                id = (int)cmd.ExecuteScalar();
+
+                conn.Close();
+                return id;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return -1;
+            }
+        }
+
+        public bool UpdateUser(PersonalDetails u)
+        {
+            var stt = false;
+            var query = string.Format("UPDATE PersonalDetail SET r_ID = {0}, dp_ID = {1}, p_Name = '{2}', p_Email = '{3}', p_Pass = '{4}', p_Detail = '{5}' WHERE p_ID = {6}",
+                u.roleId, u.departmentId, u.Name, u.Email, u.Pass, u.Details, u.Id);
+
+            var conn = Connect();
+
+            try
+            {
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                stt = cmd.ExecuteNonQuery() == 1;
+
+                conn.Close();
+                return stt;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return false;
+            }
+        }
         #endregion
 
         #region Topic
@@ -643,6 +734,76 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                 }
                 conn.Close();
                 return lstCmt;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return null;
+            }
+        }
+        #endregion
+
+        #region Department
+        public List<Department> GetAllDepartments()
+        {
+            var lst = new List<Department>();
+
+            var query = string.Format("SELECT * FROM Department");
+
+            var conn = Connect();
+
+            try
+            {
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    var tp = new Department();
+                    tp.Id = int.Parse(reader["dp_ID"].ToString());
+                    tp.Name = reader["dp_Name"].ToString();
+                    tp.Details = reader["dp_Description"].ToString();
+
+                    lst.Add(tp);
+                }
+
+                conn.Close();
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return null;
+            }
+        }
+
+        public Department GetDepartmentById(int id)
+        {
+            var dp = new Department();
+            var query = string.Format("SELECT * FROM Department WHERE dp_ID = {0}", id);
+
+            var conn = Connect();
+            try
+            {
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        dp.Id = int.Parse(reader["dp_ID"].ToString());
+                        dp.Name = reader["dp_Name"].ToString();
+                        dp.Details = reader["dp_Description"].ToString();
+                    }
+                    conn.Close();
+                    return dp;
+                }
+
+                conn.Close();
+                return null;
             }
             catch (Exception ex)
             {
