@@ -95,32 +95,44 @@
             $("#lstTopics").html(html);
         }
 
-        function topiconclick(lnk) {
-            var id = lnk.getattribute('TopicId');
-            var pageurl = '<%=ResolveUrl("TopicMng.aspx")%>';
+        function TopicOnclick(lnk) {
+            var id = lnk.getAttribute('TopicId');
+            var pageUrl = '<%=ResolveUrl("TopicMng.aspx")%>';
             $.ajax({
-                type: "post",
-                url: pageurl + "/TopicClicked",
-                data: json.stringify({
+                type: "POST",
+                url: pageUrl + "/TopicClicked",
+                data: JSON.stringify({
                     'id': id
                 }),
-                contenttype: "application/json; charset=utf-8",
-                datatype: "json",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
                 success: function (data) {
                     $('#txtName').val(data.d.Name);
-                    $('#txtName').attr("topicid", data.d.ID);
+                    $('#txtName').attr("TopicId", data.d.Id);
+                    $('#txtName').prop("disabled", true);
+
                     $('#txtDescription').val(data.d.Details);
+                    $('#txtDescription').prop("disabled", true);
+
+                    $('#dtPosted').val(data.d.PostedDate);
+
+                    $('#dtClosure').val(data.d.ClosureDate);
+                    $('#dtFinal').val(data.d.FinalClosureDate);
                 },
-                failure: function (errmsg) {
-                    alert(errmsg);
+                failure: function (errMsg) {
+                    alert(errMsg);
                 },
             });
         }
 
-        <%--function AddTopic() {
+        function AddTopic() {
             var id = $('#txtName').attr("TopicId");
             var name = $('#txtName').val();
-            var des = $('#txtDescription').val();
+            var details = $('#txtDescription').val();
+            //var posted = $('#dtPosted').val();
+            var closure = $('#dtClosure').val();
+            var final = $('#dtFinal').val();
+
             var pageUrl = '<%=ResolveUrl("TopicMng.aspx")%>';
 
             if (typeof (id) !== 'undefined') {
@@ -128,8 +140,21 @@
                 return;
             }
 
-            if (name === "") {
-                alert("ERROR: Topic Name is required!!!");
+            if (name === "" || closure === "" || final === "") {
+                alert("ERROR: Topic Name, Closure Date and Final Closure Date are required!!!");
+                return;
+            }
+
+            //validate Closure vs Final
+            var dclosure = new Date(closure);
+            var dfinal = new Date(final);
+            if (dfinal < dclosure) {
+                alert("ERROR: Final Closure Date cannot be earlier than Closure Date!!!");
+                return;
+            }
+
+            if (dfinal < new Date() || dclosure < new Date()) {
+                alert("ERROR: Closure Date and Final Closure Date cannot be earlier than today!!!");
                 return;
             }
 
@@ -138,7 +163,9 @@
                 url: pageUrl + "/Client_AddTopic",
                 data: JSON.stringify({
                     'name': name,
-                    'description': des
+                    'details': details,
+                    'closure': closure,
+                    'final': final
                 }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -153,21 +180,29 @@
                     alert(errMsg);
                 },
             });
-        }--%>
+        }
 
-        <%--function EditTopic() {
+        function EditTopic() {
             var id = $('#txtName').attr("TopicId");
-            var name = $('#txtName').val();
-            var des = $('#txtDescription').val();
+            var closure = $('#dtClosure').val();
+            var final = $('#dtFinal').val();
             var pageUrl = '<%=ResolveUrl("TopicMng.aspx")%>';
-
-            if (name === "") {
-                alert("ERROR: Topic Name is required!!!");
-                return;
-            }
 
             if (typeof (id) === "undefined") {
                 alert("[ERROR]: No Topic was selected to be edited!!!");
+                return;
+            }
+
+            //validate Closure vs Final
+            var dclosure = new Date(closure);
+            var dfinal = new Date(final);
+            if (dfinal < dclosure) {
+                alert("ERROR: Final Closure Date cannot be earlier than Closure Date!!!");
+                return;
+            }
+
+            if (dfinal < new Date() || dclosure < new Date()) {
+                alert("ERROR: Closure Date and Final Closure Date cannot be earlier than today!!!");
                 return;
             }
 
@@ -176,8 +211,8 @@
                 url: pageUrl + "/Client_UpdateTopic",
                 data: JSON.stringify({
                     'id': id,
-                    'name': name,
-                    'description': des
+                    'closure': closure,
+                    'final': final
                 }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -192,7 +227,7 @@
                     alert(errMsg);
                 },
             });
-        }--%>
+        }
 
 
         function enablePaging(currentP, totalPage) {
@@ -303,20 +338,20 @@
                         </div>
                         <div class="form-group">
                             <label>Posted Date</label>
-
+                            <input type="date" id="dtPosted" class="form-control" disabled="true"/>
                         </div>
                         <div class="form-group">
                             <label>Closure Date</label>
-
+                            <input type="date" id="dtClosure" class="form-control" />
                         </div>
                         <div class="form-group">
                             <label>Final Date</label>
-
+                            <input type="date" id="dtFinal" class="form-control" />
                         </div>
 
                         <div style="text-align: center">
-                            <%--<button id="btnAddTopic" class="btn btn-success" onclick="AddTopic()">Add New Topic</button>--%>
-                            <%--<button id="btnEditTopic" class="btn btn-warning" onclick="EditTopic()">Edit Topic</button>--%>
+                            <button id="btnAddTopic" class="btn btn-success" onclick="AddTopic()">Add New Topic</button>
+                            <button id="btnEditTopic" class="btn btn-warning" onclick="EditTopic()">Edit Topic</button>
                         </div>
                     </div>
                 </div>

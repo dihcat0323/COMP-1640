@@ -192,6 +192,30 @@ tp.Name, tp.Details, tp.PostedDate, tp.ClosureDate, tp.FinalClosureDate);
                 return null;
             }
         }
+
+        public bool UpdateTopic(Topic tp)
+        {
+            var stt = false;
+            var query = string.Format("UPDATE Topic SET t_ClosureDate = '{0}', t_FinalClosureDate = '{1}' WHERE t_ID = '{2}'", tp.ClosureDate, tp.FinalClosureDate, tp.Id);
+
+            var conn = Connect();
+
+            try
+            {
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                stt = cmd.ExecuteNonQuery() == 1;
+
+                conn.Close();
+                return stt;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return false;
+            }
+        }
         #endregion
 
         #region Idea
