@@ -76,6 +76,9 @@
     <Content Include="Post.aspx" />
     <Content Include="AddIdea.aspx" />
     <Content Include="Topic.aspx" />
+    <Content Include="Role.aspx" />
+    <Content Include="Category.aspx" />
+    <Content Include="TopicMng.aspx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -97,7 +100,9 @@
   <ItemGroup>
     <Compile Include="DAL\Common.cs" />
     <Compile Include="DAL\DataAccess.cs" />
+    <Compile Include="Entity\CategoryEntity.cs" />
     <Compile Include="Entity\IdeaEntity.cs" />
+    <Compile Include="Entity\RoleEntity.cs" />
     <Compile Include="Entity\TopicEntity.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -153,6 +158,27 @@
     </Compile>
     <Compile Include="Topic.aspx.designer.cs">
       <DependentUpon>Topic.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Role.aspx.cs">
+      <DependentUpon>Role.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Role.aspx.designer.cs">
+      <DependentUpon>Role.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Category.aspx.cs">
+      <DependentUpon>Category.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Category.aspx.designer.cs">
+      <DependentUpon>Category.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TopicMng.aspx.cs">
+      <DependentUpon>TopicMng.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TopicMng.aspx.designer.cs">
+      <DependentUpon>TopicMng.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

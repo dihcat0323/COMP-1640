@@ -1,4 +1,5 @@
-﻿using COMP___1640.Models;
+﻿using COMP___1640.DAL;
+using COMP___1640.Models;
 using System;
 
 namespace COMP___1640

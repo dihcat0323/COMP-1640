@@ -10,35 +10,18 @@ using System.Web.UI.WebControls;
 
 namespace COMP___1640
 {
-    public partial class WebForm4 : System.Web.UI.Page
+    public partial class WebForm7 : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["Login"] != null)
-            {
-                var user = (PersonalDetails)Session["Login"];
-                var role = new DataAccess().GetRoleById(user.roleId);
 
-                if ((role.Name.Contains("Manager") && role.Name.Contains("QA")))
-                {
-                    Response.Redirect("Category.aspx");
-                }
-                else if (role.Name.Contains("Admin"))
-                {
-                    Response.Redirect("TopicMng.aspx");
-                }
-                else
-                {
-                    Response.Redirect("Topic.aspx");
-                }
-            }
         }
 
         [System.Web.Services.WebMethod]
         public static TopicEntity LoadData(int currentPage, int pagesize)
         {
             var db = new DataAccess();
-            var TopicEntity = new TopicEntity();
+            var topicEntity = new TopicEntity();
 
             var lstTopics = db.GetAllTopics();
             lstTopics.Reverse();
@@ -72,21 +55,18 @@ namespace COMP___1640
                 totalPage = 1;
             }
 
-            TopicEntity.ListTopics = lstTopicUi.Skip(currentPage * pagesize).Take(pagesize).ToList();
-            TopicEntity.TotalPage = totalPage;
+            topicEntity.ListTopics = lstTopicUi.Skip(currentPage * pagesize).Take(pagesize).ToList();
+            topicEntity.TotalPage = totalPage;
 
-            return TopicEntity;
+            return topicEntity;
         }
 
         [System.Web.Services.WebMethod]
-        public static object TopicClicked(int TopicId)
+        public static object TopicClicked(int id)
         {
-            Page obj = new Page();
-            obj.Session["TopicId"] = TopicId;
+            var tp = new DataAccess().GetTopicById(id);
 
-
-
-            return null;
+            return tp;
         }
     }
 }

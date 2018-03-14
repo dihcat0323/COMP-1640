@@ -382,6 +382,76 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                 return null;
             }
         }
+
+        public bool AddCategory(Category cat)
+        {
+            var query = string.Format("INSERT INTO Category(c_Name, c_Description) VALUES('{0}', '{1}')", cat.Name, cat.Description);
+
+            var conn = Connect();
+            try
+            {
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var stt = cmd.ExecuteNonQuery() == 1;
+
+                conn.Close();
+                return stt;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return false;
+            }
+        }
+
+        public bool UpdateCategory(Category cat)
+        {
+            var stt = false;
+            var query = string.Format("UPDATE Category SET c_Name = '{0}', c_Description = '{1}' WHERE c_ID = {2}", cat.Name, cat.Description, cat.Id);
+
+            var conn = Connect();
+
+            try
+            {
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                stt = cmd.ExecuteNonQuery() == 1;
+
+                conn.Close();
+                return stt;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return false;
+            }
+        }
+
+        public bool DeleteCategory(int id)
+        {
+            var stt = false;
+            var query = string.Format("DELETE Category WHERE c_ID = {0}", id);
+
+            var conn = Connect();
+
+            try
+            {
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                stt = cmd.ExecuteNonQuery() == 1;
+
+                conn.Close();
+                return stt;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return false;
+            }
+        }
         #endregion
 
         #region Role
@@ -418,12 +488,89 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                 return null;
             }
         }
+
+        public List<Role> GetAllRoles()
+        {
+            var lstRoles = new List<Role>();
+            var query = string.Format("SELECT * FROM Role");
+
+            var conn = Connect();
+            try
+            {
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    var r = new Role();
+                    r.Id = int.Parse(reader["r_ID"].ToString());
+                    r.Name = reader["r_Name"].ToString();
+                    r.Description = reader["r_Description"].ToString();
+
+                    lstRoles.Add(r);
+                }
+                conn.Close();
+                return lstRoles;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return null;
+            }
+        }
+
+        public bool AddRole(Role role)
+        {
+            var query = string.Format("INSERT INTO Role(r_Name, r_Description) VALUES('{0}', '{1}')", role.Name, role.Description);
+
+            var conn = Connect();
+            try
+            {
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var stt = cmd.ExecuteNonQuery() == 1;
+
+                conn.Close();
+                return stt;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return false;
+            }
+        }
+
+        public bool UpdateRole(Role r)
+        {
+            var stt = false;
+            var query = string.Format("UPDATE Role SET r_Name = '{0}', r_Description = '{1}' WHERE r_ID = {2}", r.Name, r.Description, r.Id);
+
+            var conn = Connect();
+
+            try
+            {
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                stt = cmd.ExecuteNonQuery() == 1;
+
+                conn.Close();
+                return stt;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         #endregion
 
         #region Comment
         public bool AddComment(Comment cmt)
         {
-            
+
 
             var stt = false;
             var query = string.Format("INSERT INTO Comment (I_ID, p_ID, cmt_Detail, cmt_IsAnonymous, cmt_PostedDate) VALUES ({0}, {1}, '{2}', '{3}', '{4}')",
