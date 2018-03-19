@@ -1,55 +1,86 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Layout.Master" AutoEventWireup="true" CodeBehind="Post.aspx.cs" Inherits="COMP___1640.WebForm2" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div class="container body-content col-12">
+    <script type="text/javascript">
+        function bindComments(lst) {
+            var html = "";
+            var c = JSON.parse(lst);
+            for (var i = 0; i < c.length; i++) {
+                //html += '<div class="media"><p class="pull-right"><small>' + c[i].postedDate + ' days ago</small></p><div class="media-body"><h4 class="media-heading user_name">' + c[i].userName + '</h4>' + c[i].Details + '</div></div>'
+                html += '<li style="padding: 10px 0; border-top: 1px solid #e8e8e8;"><big><span class="user" style="margin-top: 5em; padding-top: 0;"><a href="#">' + c[i].userName + '</a></span></big><span class="content" style="display: block; margin-left: 60px;">' + c[i].Details + '</span><span class="timestamp" style="color: #777; display: block; margin-left: 60px;"><span>posted ' + c[i].postedDate + ' days ago</span></span></li>'
+            }
 
+            $("#lstComment").html(html);
+        }
+    </script>
+    <%--<li style="padding: 10px 0; border-top: 1px solid #e8e8e8;"><big><span class="user" style="margin-top: 5em; padding-top: 0;"><a href="#">' + c[i].userName + '</a></span></big><span class="content" style="display: block; margin-left: 60px;">' + c[i].Details + '</span><span class="timestamp" style="color: #777; display: block; margin-left: 60px;"><span>' + c[i].postedDate + ' days ago</span></span></li>--%>
+
+    <div class="container body-content col-12">
         <div class="container">
-                <div class="row">
-                    <aside class="col-md-8">
-                        <section class="user_info">
-                            <h1>
-                                <%--<a href="#">Admin</a>--%>
-                                <asp:LinkButton ID="lbtnUser" runat="server" href="Login.aspx" />
-                            </h1>
-                            <div class="timestamp">
-                                <%--posted 28 days ago.--%>
-                                <asp:Label ID="lblPostedDate" runat="server" />
-                                <%--<p># <a href="/tags/test">test</a></p>--%>
-                            </div>
-                            <div class="title">
-                                <%--<big>--%>
-                                    <h2>
-                                        <%--McMaster: Potential for war with North Korea 'increasing every day'--%>
-                                        <asp:Label ID="lblTitle" runat="server" />
-                                    </h2>
-                                <%--</big>--%>
-                            </div>
-                        </section>
-                        <div class="content">
-                            <p>
-                                <%--(CNN)White House national security adviser HR McMaster said Saturday that North Korea represents "the greatest immediate threat to the United States" and that the potential for war with the communist nation is growing each day.--%>
-                                <asp:Label ID="lblContent" runat="server" />
-                            </p>
+            <div class="row">
+                <aside class="col-md-8">
+                    <section class="user_info">
+                        <h1>
+                            <a id="lbtnUser" runat="server" href="Login.aspx"></a>
+                        </h1>
+                        <div class="timestamp">
+                            <asp:Label ID="lblPostedDate" runat="server" />
                         </div>
-                        <%--<a href="#">Edit</a>--%>
-                        <asp:LinkButton ID="lbtnEdit" runat="server" Text="Edit" />
-                    </aside>
-                    <div class="col-md-4">
-                        <h3>Comment <asp:Label ID="lblCmtCount" runat="server" /></h3>
-                        <div class="form-group">
-                            <%--<input type="text" class="form-control" id="exampleInputComment" placeholder="Comment here...">--%>
-                            <asp:TextBox ID="txtCmt" runat="server" CssClass="form-control" placecholder="Comment here..."/>
-                            <%--<small class="form-text text-muted">Type it in pussy!</small>--%>
+                        <div class="title">
+                            <h2 id="lblTitle" runat="server"></h2>
                         </div>
-                        <div class="form-group">
-                            <asp:Button ID="btnSubmitCmt" runat="server" Text="Submit Comment" CssClass="btn"/>
-                        </div>
+                    </section>
+                    <div class="content">
+                        <p id="lblContent" runat="server" />
                     </div>
+                    <br />
+                    <section class="user_info">
+                        <div class="timestamp">
+                            <strong>Category: </strong>
+                            <span id="lblCategory" runat="server"></span>
+                        </div>
+                        <div class="timestamp">
+                            <strong>Document Link: </strong>
+                            <span id="lblDocumentLink" runat="server"></span>
+                        </div>
+                        <div class="timestamp">
+                            <strong>Submitted As Anonymous: </strong>
+                            <span id="lblAnonymous" runat="server"></span>
+                        </div>
+                        <div class="timestamp">
+                            <strong>Total Views: </strong>
+                            <span id="lblTotalView" runat="server"></span>
+                        </div>
+                    </section>
+                </aside>
+
+
+                <div class="col-md-4">
+                    <h3>Comment
+                        <asp:Label ID="lblCmtCount" runat="server" />
+                    </h3>
+
+                    <%--<div class="form-group comment-list" id="lstComment">
+                    </div>--%>
+
+                    <div class="form-group">
+                        <asp:TextBox ID="txtCmt" runat="server" CssClass="form-control" placecholder="Comment here..." />
+                        <asp:CheckBox ID="ckbAnonymous" runat="server" Text="Submit Comment as Anonymous" />
+                    </div>
+                    <div class="form-group">
+                        <asp:Button ID="btnSubmitCmt" runat="server" Text="Submit Comment" CssClass="btn" OnClick="btnSubmitCmt_Click" />
+                    </div>
+
+                    <ol class="comments" style="list-style: none; padding: 0;" id="lstComment">
+                    </ol>
+
                 </div>
             </div>
-            
         </div>
 
-    
+    </div>
+
+
 </asp:Content>

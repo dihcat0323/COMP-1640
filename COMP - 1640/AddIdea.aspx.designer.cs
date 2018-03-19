@@ -58,6 +58,15 @@ namespace COMP___1640 {
         protected global::System.Web.UI.WebControls.CheckBox ckbAnonymous;
         
         /// <summary>
+        /// ckbAgreeTerms control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox ckbAgreeTerms;
+        
+        /// <summary>
         /// btnAddIdea control.
         /// </summary>
         /// <remarks>

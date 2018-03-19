@@ -1,20 +1,16 @@
 ﻿using COMP___1640.DAL;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace COMP___1640
 {
-    public partial class WebForm1 : System.Web.UI.Page
+    public partial class WebForm1 : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["Login"] != null)
             {
-                Response.Redirect("Home.aspx");
+                Response.Redirect("Topic.aspx");
             }
         }
 
@@ -38,11 +34,11 @@ namespace COMP___1640
                 Session["Login"] = p;
                 
                 //redirect to Home
-                Response.Redirect("Home.aspx");
+                Response.Redirect("Topic.aspx");
             }
             else
             {
-                var script = "alert(\"ERROR: email or password invalid!!!\");";
+                var script = "alert(\"ERROR: Email or password invalid!!!\");";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
             }
         }

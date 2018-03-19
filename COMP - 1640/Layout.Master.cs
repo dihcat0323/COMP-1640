@@ -1,10 +1,6 @@
-﻿using COMP___1640.Models;
+﻿using COMP___1640.DAL;
+using COMP___1640.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace COMP___1640
 {
@@ -17,7 +13,7 @@ namespace COMP___1640
             {
                 var p = (PersonalDetails)Session["Login"];
                 lbtnUser.Text = p.Name;
-                lbtnUser.Attributes.Add("href", "Home.aspx");
+                lbtnUser.Attributes.Add("href", "Topic.aspx");
             }
             else
             {
