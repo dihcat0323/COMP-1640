@@ -43,7 +43,8 @@
                         </div>
                         <div class="timestamp">
                             <strong>Document Link: </strong>
-                            <span id="lblDocumentLink" runat="server"></span>
+                            <%--<span id="lblDocumentLink" runat="server"></span>--%>
+                            <asp:LinkButton ID="lbtnDocumentLink" runat="server" OnClick="lbtnDocumentLink_Click"></asp:LinkButton>
                         </div>
                         <div class="timestamp">
                             <strong>Submitted As Anonymous: </strong>

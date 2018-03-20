@@ -24,13 +24,8 @@
 
             <div class="form-group">
                 <label>Document Link</label>
-                <asp:FileUpload ID="fuDocLink" runat="server" disable="true" />
+                <asp:FileUpload ID="fuDocLink" runat="server" />
             </div>
-
-            <%--<div class="form-group">
-                <label>Tags</label>
-                <asp:TextBox ID="txtTag" runat="server" CssClass="form-control" placeholder="Tags" />
-            </div>--%>
 
             <div class="form-group">
                 <asp:CheckBox ID="ckbAnonymous" runat="server" Text="Submit as Anonymous" />

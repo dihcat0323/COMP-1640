@@ -2,6 +2,7 @@
 using COMP___1640.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 
@@ -46,7 +47,7 @@ namespace COMP___1640
 
                 //Category Name
                 lblCategory.InnerHtml = db.GetCategoryById(idea.CategoryId).Name;
-                lblDocumentLink.InnerHtml = string.IsNullOrEmpty(idea.DocumentLink) ? "No Link" : idea.DocumentLink;
+                lbtnDocumentLink.Text = string.IsNullOrEmpty(idea.DocumentLink) ? "No Link" : idea.DocumentLink;
                 lblAnonymous.InnerHtml = idea.isAnonymous == 0 ? "No" : "Yes";
                 lblTotalView.InnerHtml = idea.TotalViews.ToString();
             }
@@ -173,6 +174,15 @@ namespace COMP___1640
             }
 
             return new Common().CalculateDateRange(tp.FinalClosureDate) <= 0;
+        }
+
+        protected void lbtnDocumentLink_Click(object sender, EventArgs e)
+        {
+            string filePath = lbtnDocumentLink.Text;
+            Response.ContentType = ContentType;
+            Response.AppendHeader("Content-Disposition", "attachment; filename=" + Path.GetFileName(filePath));
+            Response.WriteFile(filePath);
+            Response.End();
         }
     }
 }
