@@ -178,11 +178,14 @@ namespace COMP___1640
 
         protected void lbtnDocumentLink_Click(object sender, EventArgs e)
         {
-            string filePath = lbtnDocumentLink.Text;
-            Response.ContentType = ContentType;
-            Response.AppendHeader("Content-Disposition", "attachment; filename=" + Path.GetFileName(filePath));
-            Response.WriteFile(filePath);
-            Response.End();
+            if (!lbtnDocumentLink.Text.Equals("No Link"))
+            {
+                string filePath = lbtnDocumentLink.Text;
+                Response.ContentType = ContentType;
+                Response.AppendHeader("Content-Disposition", "attachment; filename=" + Path.GetFileName(filePath));
+                Response.WriteFile(filePath);
+                Response.End();
+            }
         }
     }
 }
