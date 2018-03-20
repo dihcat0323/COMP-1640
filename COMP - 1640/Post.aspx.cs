@@ -112,8 +112,7 @@ namespace COMP___1640
 
             if (string.IsNullOrEmpty(cmttxt))
             {
-                var script = "alert(\"ERROR: You cannot submit the comment without typing anything!!!\");";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
+                Response.Write("<script>alert('ERROR: You cannot submit the comment without typing anything!!!');</script>");
                 return;
             }
 
@@ -139,29 +138,29 @@ namespace COMP___1640
                 Response.Redirect("Topic.aspx");
             }
 
-            if (!CheckFinalClosureDate(tpId))
+            if (CheckFinalClosureDate(tpId))
             {
-                var script = "alert(\"You cannot submit the comment if the Final Closure Date already passed!!!\");";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
-                return;
+                //add comment
+                var ideaId = int.Parse(Session["IdeaId"].ToString());
+                var user = (PersonalDetails)Session["Login"];
+                var cmt = new Comment();
+                cmt.ideaId = ideaId;
+                cmt.isAnonymous = ckbAnonymous.Checked;
+                cmt.postedDate = DateTime.Today;
+                cmt.Details = cmttxt;
+                cmt.personId = user.Id;
+
+                var stt = new DataAccess().AddComment(cmt);
+
+                //redirect to this page
+                if (stt)
+                {
+                    Response.Redirect("Post.aspx");
+                }
             }
-
-            //add comment
-            var ideaId = int.Parse(Session["IdeaId"].ToString());
-            var user = (PersonalDetails)Session["Login"];
-            var cmt = new Comment();
-            cmt.ideaId = ideaId;
-            cmt.isAnonymous = ckbAnonymous.Checked;
-            cmt.postedDate = DateTime.Today;
-            cmt.Details = cmttxt;
-            cmt.personId = user.Id;
-
-            var stt = new DataAccess().AddComment(cmt);
-
-            //redirect to this page
-            if (stt)
+            else
             {
-                Response.Redirect("Post.aspx");
+                Response.Write("<script>alert('You cannot submit the comment if the Final Closure Date already passed!!!');</script>");
             }
         }
 
