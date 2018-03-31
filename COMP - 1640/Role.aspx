@@ -75,7 +75,7 @@
             var pageUrl = '<%=ResolveUrl("Role.aspx")%>';
 
             if (typeof (id) !== 'undefined') {
-                alert("[ERROR]: the item was selected to be EDITED, not to be INSERTED!!!");
+                alert("[ERROR]: The item was selected to be EDITED, not to be INSERTED!!!");
                 return;
             }
 
@@ -134,7 +134,7 @@
                 dataType: "json",
                 success: function (data) {
                     if (!data.d) {
-                        alert("[ERROR]: Failed when update role in DB!!!");
+                        alert("[ERROR]: Failure updating role in DB!!!");
                     } else {
                         alert("[SUCCESS]: Updated successfully!!!");
                     }

@@ -155,12 +155,12 @@
             var pageUrl = '<%=ResolveUrl("UserMng.aspx")%>';
 
             if (typeof (id) !== 'undefined') {
-                alert("[ERROR]: the item was selected to be EDITED, not to be INSERTED!!!");
+                alert("[ERROR]: The item was selected to be EDITED, not to be INSERTED!!!");
                 return;
             }
 
             if (rId === "" || dpId === "" || name === "" || email === "" || pass === "") {
-                alert("ERROR: user Name, Email and Pass are required!!!");
+                alert("ERROR: User Name, Email and Pass are required!!!");
                 return;
             }
 

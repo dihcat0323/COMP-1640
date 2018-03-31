@@ -75,7 +75,7 @@
             var pageUrl = '<%=ResolveUrl("Category.aspx")%>';
 
             if (typeof (id) !== 'undefined') {
-                alert("[ERROR]: the item was selected to be EDITED, not to be INSERTED!!!");
+                alert("[ERROR]: The item was selected to be EDITED, not to be INSERTED!!!");
                 return;
             }
 
@@ -134,7 +134,7 @@
                 dataType: "json",
                 success: function (data) {
                     if (!data.d) {
-                        alert("[ERROR]: Failed when update Category in DB!!!");
+                        alert("[ERROR]: Failure updating Category in DB!!!");
                     } else {
                         alert("[SUCCESS]: Updated successfully!!!");
                     }
@@ -164,7 +164,7 @@
                 dataType: "json",
                 success: function (data) {
                     if (!data.d) {
-                        alert("[ERROR]: Failed when delete Category in DB!!!");
+                        alert("[ERROR]: Failure deleting Category in DB!!!");
                     } else {
                         alert("[SUCCESS]: Category deleted successfully!!!");
                     }
@@ -181,7 +181,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    List of Categorys
+                    List of Categories
                 </div>
                 <div class="panel-body">
                     <div id="" class="form-inline dt-bootstrap no-footer">
@@ -217,7 +217,7 @@
                         <input type="text" id="txtName" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label>Descriptions</label>
+                        <label>Description</label>
                         <textarea id="txtDescription" class="form-control" rows="3"></textarea>
                     </div>
 
