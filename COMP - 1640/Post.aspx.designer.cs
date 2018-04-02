@@ -85,6 +85,24 @@ namespace COMP___1640 {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblTotalView;
         
         /// <summary>
+        /// lbtnLike control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtnLike;
+        
+        /// <summary>
+        /// lbtnDislike control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbtnDislike;
+        
+        /// <summary>
         /// lblCmtCount control.
         /// </summary>
         /// <remarks>

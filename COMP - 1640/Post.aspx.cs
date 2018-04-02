@@ -22,6 +22,29 @@ namespace COMP___1640
                     //Load data to page and clear Session IdeaId
                     LoadIdeaById(id);
                     LoadCmtByIdea(id);
+
+                    //Voting loading
+                    if (Session["Login"] != null)
+                    {
+                        var user = (PersonalDetails)Session["Login"];
+                        var vote = new DataAccess().GetIdeaVote(id, user.Id);
+
+                        if (vote != null && !string.IsNullOrEmpty(vote.Vote))
+                        {
+                            if (vote.Vote.ToLower().Equals("true"))
+                            {
+                                lbtnLike.CssClass = "up fontawesome-thumbs-up upVoted";
+                                lbtnDislike.CssClass = "down fontawesome-thumbs-down";
+                            }
+
+                            if (vote.Vote.ToLower().Equals("false"))
+                            {
+                                lbtnLike.CssClass = "up fontawesome-thumbs-up";
+                                lbtnDislike.CssClass = "down fontawesome-thumbs-down downVoted";
+                            }
+                        }
+
+                    }
                 }
             }
             else
@@ -186,6 +209,46 @@ namespace COMP___1640
                 Response.WriteFile(filePath);
                 Response.End();
             }
+        }
+
+        protected void lbtnLike_Click(object sender, EventArgs e)
+        {
+            if (Session["IdeaId"] == null)
+            {
+                Response.Redirect("Home.aspx");
+            }
+
+            if (Session["Login"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
+
+            var ideaId = int.Parse(Session["IdeaId"].ToString());
+            var user = (PersonalDetails)Session["Login"];
+            var stt = new DataAccess().DeleteVote(ideaId, user.Id);
+
+            new DataAccess().Voting(ideaId, user.Id, true);
+            Response.Redirect("Post.aspx");
+        }
+
+        protected void lbtnDislike_Click(object sender, EventArgs e)
+        {
+            if (Session["IdeaId"] == null)
+            {
+                Response.Redirect("Home.aspx");
+            }
+
+            if (Session["Login"] == null)
+            {
+                Response.Redirect("Login.aspx");
+            }
+
+            var ideaId = int.Parse(Session["IdeaId"].ToString());
+            var user = (PersonalDetails)Session["Login"];
+            var stt = new DataAccess().DeleteVote(ideaId, user.Id);
+
+            new DataAccess().Voting(ideaId, user.Id, false);
+            Response.Redirect("Post.aspx");
         }
     }
 }

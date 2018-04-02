@@ -813,5 +813,83 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
         }
         #endregion
 
+
+        #region Voting
+        public Voting GetIdeaVote(int ideaId, int userId)
+        {
+            var vote = new Voting();
+            var query = string.Format("SELECT * FROM Voting WHERE i_ID = {0} AND p_ID = {1}", ideaId, userId);
+
+            var conn = Connect();
+            try
+            {
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        vote.IdeaId = int.Parse(reader["i_ID"].ToString());
+                        vote.PersonId = int.Parse(reader["p_ID"].ToString());
+                        vote.Vote = reader["Vote"].ToString();
+                    }
+                    
+                }
+                conn.Close();
+                return vote;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return null;
+            }
+        }
+
+        public bool Voting(int ideaId, int userId, bool vote)
+        {
+            var stt = false;
+            var query = string.Format("INSERT INTO Voting(i_ID, p_ID, Vote) VALUES({0}, {1}, {2})", ideaId, userId, vote ? "1" : "0");
+
+            try
+            {
+                var conn = Connect();
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                stt = cmd.ExecuteNonQuery() == 1;
+
+                conn.Close();
+                return stt;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteVote(int ideaId, int userId)
+        {
+            var stt = false;
+            var query = string.Format("DELETE Voting WHERE i_ID = {0} AND p_ID = {1}", ideaId, userId);
+
+            try
+            {
+                var conn = Connect();
+                conn.Open();
+
+                var cmd = new SqlCommand(query, conn);
+                stt = cmd.ExecuteNonQuery() == 1;
+
+                conn.Close();
+                return stt;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        #endregion
     }
 }

@@ -55,6 +55,11 @@
                             <span id="lblTotalView" runat="server"></span>
                         </div>
                     </section>
+
+                    <div class="likeAndDislike">
+                        <asp:LinkButton ID="lbtnLike" runat="server" CssClass="up fontawesome-thumbs-up" OnClick="lbtnLike_Click"></asp:LinkButton>
+                        <asp:LinkButton ID="lbtnDislike" runat="server" CssClass="down fontawesome-thumbs-down" OnClick="lbtnDislike_Click"></asp:LinkButton>
+                    </div>
                 </aside>
 
 
