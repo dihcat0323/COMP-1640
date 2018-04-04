@@ -7,7 +7,7 @@ Repository of Team 2 (a.k.a "No Mercy")
   - [Meeting Minutes](https://github.com/minhdn2/COMP-1640/tree/master/Artefacts/Meeting%20Minutes)
   - [ERD](https://github.com/minhdn2/COMP-1640/tree/master/Artefacts/ERD)
   - [Database](https://github.com/minhdn2/COMP-1640/tree/master/Artefacts/Database%20Scripts)
-  - [Source](https://github.com/minhdn2/COMP-1640/tree/master/COMP%20-%201640)
+  - [Source files](https://github.com/minhdn2/COMP-1640/tree/master/COMP%20-%201640)
   
 
 
