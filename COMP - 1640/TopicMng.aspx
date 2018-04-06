@@ -136,7 +136,7 @@
             var pageUrl = '<%=ResolveUrl("TopicMng.aspx")%>';
 
             if (typeof (id) !== 'undefined') {
-                alert("[ERROR]: the item was selected to be EDITED, not to be INSERTED!!!");
+                alert("[ERROR]: The item was selected to be EDITED, not to be INSERTED!!!");
                 return;
             }
 

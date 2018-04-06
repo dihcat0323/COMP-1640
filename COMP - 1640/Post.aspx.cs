@@ -2,6 +2,7 @@
 using COMP___1640.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 
@@ -46,7 +47,7 @@ namespace COMP___1640
 
                 //Category Name
                 lblCategory.InnerHtml = db.GetCategoryById(idea.CategoryId).Name;
-                lblDocumentLink.InnerHtml = string.IsNullOrEmpty(idea.DocumentLink) ? "No Link" : idea.DocumentLink;
+                lbtnDocumentLink.Text = string.IsNullOrEmpty(idea.DocumentLink) ? "No Link" : idea.DocumentLink;
                 lblAnonymous.InnerHtml = idea.isAnonymous == 0 ? "No" : "Yes";
                 lblTotalView.InnerHtml = idea.TotalViews.ToString();
             }
@@ -112,8 +113,7 @@ namespace COMP___1640
 
             if (string.IsNullOrEmpty(cmttxt))
             {
-                var script = "alert(\"ERROR: You cannot submit the comment without typing anything!!!\");";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
+                Response.Write("<script>alert('ERROR: You cannot submit the comment without typing anything!!!');</script>");
                 return;
             }
 
@@ -139,29 +139,29 @@ namespace COMP___1640
                 Response.Redirect("Topic.aspx");
             }
 
-            if (!CheckFinalClosureDate(tpId))
+            if (CheckFinalClosureDate(tpId))
             {
-                var script = "alert(\"You cannot submit the comment if the Final Closure Date already passed!!!\");";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ServerControlScript", script, true);
-                return;
+                //add comment
+                var ideaId = int.Parse(Session["IdeaId"].ToString());
+                var user = (PersonalDetails)Session["Login"];
+                var cmt = new Comment();
+                cmt.ideaId = ideaId;
+                cmt.isAnonymous = ckbAnonymous.Checked;
+                cmt.postedDate = DateTime.Today;
+                cmt.Details = cmttxt;
+                cmt.personId = user.Id;
+
+                var stt = new DataAccess().AddComment(cmt);
+
+                //redirect to this page
+                if (stt)
+                {
+                    Response.Redirect("Post.aspx");
+                }
             }
-
-            //add comment
-            var ideaId = int.Parse(Session["IdeaId"].ToString());
-            var user = (PersonalDetails)Session["Login"];
-            var cmt = new Comment();
-            cmt.ideaId = ideaId;
-            cmt.isAnonymous = ckbAnonymous.Checked;
-            cmt.postedDate = DateTime.Today;
-            cmt.Details = cmttxt;
-            cmt.personId = user.Id;
-
-            var stt = new DataAccess().AddComment(cmt);
-
-            //redirect to this page
-            if (stt)
+            else
             {
-                Response.Redirect("Post.aspx");
+                Response.Write("<script>alert('You cannot submit the comment if the Final Closure Date already passed!!!');</script>");
             }
         }
 
@@ -174,6 +174,18 @@ namespace COMP___1640
             }
 
             return new Common().CalculateDateRange(tp.FinalClosureDate) <= 0;
+        }
+
+        protected void lbtnDocumentLink_Click(object sender, EventArgs e)
+        {
+            if (!lbtnDocumentLink.Text.Equals("No Link"))
+            {
+                string filePath = lbtnDocumentLink.Text;
+                Response.ContentType = ContentType;
+                Response.AppendHeader("Content-Disposition", "attachment; filename=" + Path.GetFileName(filePath));
+                Response.WriteFile(filePath);
+                Response.End();
+            }
         }
     }
 }

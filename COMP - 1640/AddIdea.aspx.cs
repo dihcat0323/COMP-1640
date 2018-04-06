@@ -1,6 +1,7 @@
 ﻿using COMP___1640.DAL;
 using COMP___1640.Models;
 using System;
+using System.IO;
 using System.Net.Mail;
 using System.Text;
 using System.Web.UI;
@@ -79,7 +80,7 @@ namespace COMP___1640
                 PersonalId = p.Id,
                 Title = title.Replace("'", "\""),
                 Details = content.Replace("'", "\""),
-                DocumentLink = "", //TODO:
+                DocumentLink = UploadFile(), //TODO:
                 isAnonymous = ckbAnonymous.Checked ? 1 : 0,
                 TotalViews = 0,
                 PostedDate = DateTime.Today
@@ -115,6 +116,31 @@ namespace COMP___1640
             }
 
             return new Common().CalculateDateRange(tp.ClosureDate) <= 0;
+        }
+
+        private string UploadFile()
+        {
+            if (fuDocLink.HasFile)
+            {
+                try
+                {
+                    if (fuDocLink.PostedFile.ContentLength < 5120000)
+                    {
+                        string filename = Path.GetFileName(fuDocLink.FileName);
+                        fuDocLink.SaveAs(Server.MapPath(@"~/FileUpload/") + filename);
+                        return Server.MapPath(@"~/FileUpload/") + filename;
+                    }
+                    else
+                    {
+                        Response.Write("<script>alert('[Error]: File size must be smaller than 5MB')</script>");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Response.Write("alert('[Error]: " + ex.Message + "')");
+                }
+            }
+            return null;
         }
 
         private void SendEmailToStaff(string title, string content)

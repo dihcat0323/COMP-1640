@@ -313,10 +313,10 @@ tp.Name, tp.Details, tp.PostedDate, tp.ClosureDate, tp.FinalClosureDate);
         public int AddIdea(Idea idea)
         {
             var id = -1;
-            var query = string.Format(@"INSERT INTO Idea (c_ID, p_ID, i_Title, i_Details, DocumentLink, i_IsAnonymous, TotalViews, i_PostedDate) 
+            var query = string.Format(@"INSERT INTO Idea (t_ID, c_ID, p_ID, i_Title, i_Details, DocumentLink, i_IsAnonymous, TotalViews, i_PostedDate) 
 output INSERTED.i_ID 
-VALUES ({0}, {1}, '{2}', '{3}', '{4}', {5}, {6}, '{7}')",
-idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, idea.isAnonymous, idea.TotalViews, idea.PostedDate);
+VALUES ({8}, {0}, {1}, '{2}', '{3}', '{4}', {5}, {6}, '{7}')",
+idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, idea.isAnonymous, idea.TotalViews, idea.PostedDate, idea.topicId);
 
             var conn = Connect();
 

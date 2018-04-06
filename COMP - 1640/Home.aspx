@@ -138,7 +138,7 @@
     </script>
 
     <div class='container body-content col-12'>
-        <h1>List Ideas For Topic: <asp:label ID="lblTopicName" runat="server"></asp:label></h1>
+        <h1>List of Ideas for Topic: <asp:label ID="lblTopicName" runat="server"></asp:label></h1>
         <div class='col-12'>
             <div class='form-group input-group'>
                 <input type='text' name='search' id='search' placeholder='Search post' class='form-control' />
@@ -155,7 +155,7 @@
         <div class='center col-12' id='lstIdeas'>
         </div>
 
-        <nav aria-label="Page navigation example">
+        <nav aria-label="Page navigation example" style="margin-bottom:20px">
             <ul class="pagination">
                 <li class="page-item"><a id="first-page" class="page-link" href="#">First</a></li>
                 <li class="page-item"><a id="previous-page" class="page-link" href="#">Previous</a></li>

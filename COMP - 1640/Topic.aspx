@@ -71,7 +71,7 @@
                 url: pageUrl + "/LoadData",
                 data: JSON.stringify({
                     'currentPage': page,
-                    'pagesize': 2
+                    'pagesize': 5
                 }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -144,7 +144,7 @@
         <div class='center col-12' id='lstTopics'>
         </div>
 
-        <nav aria-label="Page navigation example">
+        <nav aria-label="Page navigation example" style="margin-bottom:20px">
             <ul class="pagination">
                 <li class="page-item"><a id="first-page" class="page-link" href="#">First</a></li>
                 <li class="page-item"><a id="previous-page" class="page-link" href="#">Previous</a></li>
