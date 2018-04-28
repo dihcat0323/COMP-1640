@@ -36,6 +36,7 @@
                 <aside class="col-lg-3">
                     <ul class="nav nav-pills nav-stacked">
                         <li class="dropdown-header"><h2><strong>Staff Section</strong></h2></li>
+                        <li><a href="StatisticReport.aspx">Statistic Report</a></li>
                         <li><a href="TopicMng.aspx">Topic</a></li>
                         <li><a href="UserMng.aspx">Users</a></li>
                         <li><a href="Category.aspx">Category</a></li>

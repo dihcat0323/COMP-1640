@@ -81,6 +81,10 @@
     <Content Include="Category.aspx" />
     <Content Include="TopicMng.aspx" />
     <Content Include="UserMng.aspx" />
+    <Content Include="StatisticReport.aspx" />
+    <None Include="Properties\PublishProfiles\nomercy.pubxml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -192,6 +196,13 @@
     </Compile>
     <Compile Include="UserMng.aspx.designer.cs">
       <DependentUpon>UserMng.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StatisticReport.aspx.cs">
+      <DependentUpon>StatisticReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StatisticReport.aspx.designer.cs">
+      <DependentUpon>StatisticReport.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

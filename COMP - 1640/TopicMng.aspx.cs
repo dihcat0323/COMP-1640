@@ -83,18 +83,18 @@ namespace COMP___1640
         public static object TopicClicked(int id)
         {
             var tp = new DataAccess().GetTopicById(id);
-            var posted = tp.PostedDate.ToString().Split(' ')[0].Split('-');
-            var closure = tp.ClosureDate.ToString().Split(' ')[0].Split('-');
-            var final = tp.FinalClosureDate.ToString().Split(' ')[0].Split('-');
+            var posted = Convert.ToDateTime(tp.PostedDate);
+            var closure = Convert.ToDateTime(tp.ClosureDate);
+            var final = Convert.ToDateTime(tp.FinalClosureDate);
             var tpUi = new TopicUI
             {
 
                 Id = tp.Id,
                 Name = tp.Name,
                 Details = tp.Details,
-                PostedDate = string.Format("20{0}-{1}-{2}", posted[2], ConvertMonth(posted[1]), posted[0]),
-                ClosureDate = string.Format("20{0}-{1}-{2}", closure[2], ConvertMonth(closure[1]), closure[0]),
-                FinalClosureDate = string.Format("20{0}-{1}-{2}", final[2], ConvertMonth(final[1]), final[0])
+                PostedDate = posted.ToString("yyyy-MM-dd"),
+                ClosureDate = closure.ToString("yyyy-MM-dd"),
+                FinalClosureDate = final.ToString("yyyy-MM-dd")
             };
 
             return tpUi;

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Globalization;
 
 namespace COMP___1640.DAL
 {
@@ -9,7 +10,9 @@ namespace COMP___1640.DAL
     {
         public static SqlConnection Connect()
         {
-            return new SqlConnection("Data Source=.;Initial Catalog=IdeasCampaignManager_ver2;Integrated Security=False;User Id=sa;Password=abc@12345;MultipleActiveResultSets=True");
+            //return new SqlConnection("Data Source=.;Initial Catalog=IdeasCampaignManager_ver2;Integrated Security=False;User Id=sa;Password=abc@12345;MultipleActiveResultSets=True");
+            //return new SqlConnection("workstation id=IdeasCampaignManager.mssql.somee.com;packet size=4096;user id=minhdn2_SQLLogin_1;pwd=anxh9wmukk;data source=IdeasCampaignManager.mssql.somee.com;persist security info=False;initial catalog=IdeasCampaignManager");
+            return new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["ConnectionStringName"].ConnectionString);
         }
         #region PersonalDetail
         public PersonalDetails CheckLogIn(string email, string pass)
@@ -233,9 +236,19 @@ tp.Name, tp.Details, tp.PostedDate, tp.ClosureDate, tp.FinalClosureDate);
                     tp.Id = id;
                     tp.Name = reader["t_Name"].ToString();
                     tp.Details = reader["t_Details"].ToString();
-                    tp.PostedDate = Convert.ToDateTime(string.IsNullOrEmpty(reader["t_PostedDate"].ToString()) ? "" : reader["t_PostedDate"].ToString());
-                    tp.ClosureDate = Convert.ToDateTime(string.IsNullOrEmpty(reader["t_ClosureDate"].ToString()) ? "" : reader["t_ClosureDate"].ToString());
-                    tp.FinalClosureDate = Convert.ToDateTime(string.IsNullOrEmpty(reader["t_FinalClosureDate"].ToString()) ? "" : reader["t_FinalClosureDate"].ToString());
+
+                    var posted = reader["t_PostedDate"].ToString().Split(' ');
+                    var temp = reader["t_PostedDate"];
+                    var closure = reader["t_ClosureDate"].ToString().Split(' ');
+                    var final = reader["t_FinalClosureDate"].ToString().Split(' ');
+
+                    var dt_posted = string.IsNullOrEmpty(posted[0]) ? "" : posted[0];
+                    var dt_closure = string.IsNullOrEmpty(closure[0]) ? "" : closure[0];
+                    var dt_final = string.IsNullOrEmpty(final[0]) ? "" : final[0];
+                    var sysDtFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+                    tp.PostedDate = DateTime.ParseExact(dt_posted, sysDtFormat, CultureInfo.InvariantCulture);
+                    tp.ClosureDate = DateTime.ParseExact(dt_closure, sysDtFormat, CultureInfo.InvariantCulture);
+                    tp.FinalClosureDate = DateTime.ParseExact(dt_final, sysDtFormat, CultureInfo.InvariantCulture);
                 }
 
                 conn.Close();
@@ -835,7 +848,7 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
                         vote.PersonId = int.Parse(reader["p_ID"].ToString());
                         vote.Vote = reader["Vote"].ToString();
                     }
-                    
+
                 }
                 conn.Close();
                 return vote;
@@ -891,5 +904,232 @@ idea.CategoryId, idea.PersonalId, idea.Title, idea.Details, idea.DocumentLink, i
             }
         }
         #endregion
+
+        #region Statistic Report
+        public int CountIdeasByTopic(int tpId)
+        {
+            var query = string.Format("SELECT TotalCount = count(*) FROM Idea WHERE t_ID = {0}", tpId);
+            var conn = Connect();
+            var tp = new TopicUI();
+            try
+            {
+                conn.Open();
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+
+
+
+                while (reader.Read())
+                {
+                    tp.TotalIdeas = int.Parse(reader["TotalCount"].ToString());
+                }
+
+                conn.Close();
+                return tp.TotalIdeas;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return -1;
+            }
+        }
+
+        public int TotalIdeas()
+        {
+            var total = -1;
+            var query = string.Format("SELECT TotalCount = count(*) FROM Idea ");
+            var conn = Connect();
+            try
+            {
+                conn.Open();
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+
+
+
+                while (reader.Read())
+                {
+                    total = int.Parse(reader["TotalCount"].ToString());
+                }
+
+                conn.Close();
+                return total;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return -1;
+            }
+        }
+
+        public int TotalCmts()
+        {
+            var total = -1;
+            var query = string.Format("SELECT TotalCount = count(*) FROM Comment ");
+            var conn = Connect();
+            try
+            {
+                conn.Open();
+                var cmd = new SqlCommand(query, conn);
+                var reader = cmd.ExecuteReader();
+
+
+
+                while (reader.Read())
+                {
+                    total = int.Parse(reader["TotalCount"].ToString());
+                }
+
+                conn.Close();
+                return total;
+            }
+            catch (Exception ex)
+            {
+                conn.Close();
+                return -1;
+            }
+        }
+
+        //        public Dictionary<string, List<string>> DepartmentStatistics()
+        //        {
+        //            var dp = GetAllDepartments();
+        //            var dic = new Dictionary<string, List<string>>();
+        //            if (dp != null)
+        //            {
+        //                foreach (var x in dp)
+        //                {
+        //                    dic.Add(x.Name, new List<string> {"0", "0" });
+        //                }
+
+
+        //                var query = string.Format(@"Select dp.dp_Name, Count(dp.dp_Name) as total, (Count(dp.dp_Name)* 100 / (Select Count(*) From idea)) as percentage
+        //from Department dp
+        //full join PersonalDetail p on p.dp_ID = dp.dp_ID
+        //full join idea i on i.p_ID = p.p_ID where i.i_ID is not null
+        //group by dp.dp_Name");
+
+
+        //                var conn = Connect();
+        //                try
+        //                {
+        //                    conn.Open();
+        //                    var cmd = new SqlCommand(query, conn);
+        //                    var reader = cmd.ExecuteReader();
+
+        //                    while (reader.Read())
+        //                    {
+        //                        var name = reader["dp_Name"].ToString();
+        //                        foreach (var x in dic)
+        //                        {
+        //                            if (x.Key.Equals(name))
+        //                            {
+        //                                var total = reader["total"].ToString();
+        //                                var percentage = reader["percentage"].ToString();
+        //                                var val = new List<string> { total, percentage };
+        //                                dic[name] = val;
+        //                            }
+        //                        }
+        //                    }
+
+        //                    conn.Close();
+        //                    return dic;
+        //                }
+        //                catch (Exception ex)
+        //                {
+        //                    conn.Close();
+        //                    return null;
+        //                }
+        //            }
+        //            return null;
+        //        }
+
+        public List<Department> DepartmentStatistics()
+        {
+            var dp = GetAllDepartments();
+            
+            if (dp != null)
+            {
+                var query = string.Format(@"Select dp.dp_Name, Count(dp.dp_Name) as total, (Count(dp.dp_Name)* 100 / (Select Count(*) From idea)) as percentage
+from Department dp
+full join PersonalDetail p on p.dp_ID = dp.dp_ID
+full join idea i on i.p_ID = p.p_ID where i.i_ID is not null
+group by dp.dp_Name");
+
+
+                var conn = Connect();
+                try
+                {
+                    conn.Open();
+                    var cmd = new SqlCommand(query, conn);
+                    var reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        var name = reader["dp_Name"].ToString();
+                        foreach (var x in dp.ToArray())
+                        {
+                            if (x.Name.Equals(name))
+                            {
+                                var total = reader["total"].ToString();
+                                var percentage = reader["percentage"].ToString();
+                                x.TotalIdeas = total;
+                                x.IdeaPercentages = percentage;
+                            }
+                        }
+                    }
+
+                    conn.Close();
+                    return dp;
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+                    return null;
+                }
+            }
+            return null;
+        }
+
+        public List<string> AnonymousPercentages()
+        {
+            var lstData = new List<string> { "0", "0", "0" };
+            var lstQuery = new List<string> {
+                string.Format(@"Select i_IsAnonymous, (Count(i_IsAnonymous)* 100 / (Select Count(*) From idea)) as percentage
+From idea where i_IsAnonymous = 1
+group by i_IsAnonymous"),
+                string.Format(@"Select cmt_IsAnonymous, (Count(cmt_IsAnonymous)* 100 / (Select Count(*) From comment)) as percentage
+From comment where cmt_IsAnonymous = 1
+group by cmt_IsAnonymous"),
+                string.Format(@"Select distinct ((select count(*) from idea i
+left join comment b on b.I_ID = i.i_ID where b.I_ID is null)* 100 / (Select Count(*) From idea)) as percentage
+From idea")
+        };
+
+            for (int y = 0; y < lstQuery.Count; y++)
+            {
+                var conn = Connect();
+                try
+                {
+                    conn.Open();
+                    var cmd = new SqlCommand(lstQuery[y], conn);
+                    var reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        var percentage = reader["percentage"].ToString();
+                        lstData[y] = percentage;
+                    }
+
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    conn.Close();
+                }
+            }
+            return lstData;
+        }
+        #endregion
+
     }
 }
