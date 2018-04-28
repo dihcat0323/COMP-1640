@@ -24,7 +24,7 @@
                 <nav>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <asp:LinkButton ID="lbtnUser" runat="server" Text="Login" /></li>
+                            <asp:LinkButton ID="lbtnUser" runat="server" Text="Login" OnClick="lbtnUser_Click" /></li>
                     </ul>
                 </nav>
             </div>
@@ -35,7 +35,9 @@
             <div class="row">
                 <aside class="col-lg-3">
                     <ul class="nav nav-pills nav-stacked">
-                        <li class="dropdown-header"><h2><strong>Staff Section</strong></h2></li>
+                        <li class="dropdown-header">
+                            <h2><strong>Staff Section</strong></h2>
+                        </li>
                         <li><a href="StatisticReport.aspx">Statistic Report</a></li>
                         <li><a href="TopicMng.aspx">Topic</a></li>
                         <li><a href="UserMng.aspx">Users</a></li>
