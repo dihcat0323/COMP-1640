@@ -1,0 +1,51 @@
+﻿@import url(http://weloveiconfonts.com/api/?family=fontawesome);
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+/* fontawesome */
+[class*="fontawesome-"]:before {
+    font-family: 'FontAwesome', sans-serif;
+}
+
+.likeAndDislike {
+
+}
+
+.up, .down {
+    border-radius: 5px;
+    background: #000000;
+    color: #ffffff;
+    float: left;
+    font-size: 20px;
+    height: 100%;
+    line-height: 50px;
+    text-align: center;
+    transition: all .2s linear;
+    width: 50px;
+}
+
+.down {
+    margin-left: 20px;
+}
+
+.up:hover {
+    background: #2ecc71;
+    color: #fff;
+    cursor: pointer;
+}
+
+.down:hover {
+    background: #e74c3c;
+    color: #fff;
+    cursor: pointer;
+}
+
+.upVoted{
+    background: #2ecc71 !important;
+    color: #fff !important;
+    cursor: pointer;
+}
+
+.downVoted{
+    background: #e74c3c !important;
+    color: #fff !important;
+    cursor: pointer;
+}

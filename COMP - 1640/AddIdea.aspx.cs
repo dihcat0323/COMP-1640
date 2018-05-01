@@ -1,6 +1,7 @@
 ﻿using COMP___1640.DAL;
 using COMP___1640.Models;
 using System;
+using System.Configuration;
 using System.IO;
 using System.Net.Mail;
 using System.Text;
@@ -145,6 +146,10 @@ namespace COMP___1640
 
         private void SendEmailToStaff(string title, string content)
         {
+            var mailAddress = ConfigurationManager.AppSettings["mailAddress"];
+            var mailPass = ConfigurationManager.AppSettings["mailPass"];
+
+
             //check role if student - no need
             var user = (PersonalDetails)Session["Login"];
             //var role = new DataAccess().GetRoleById(user.roleId);
@@ -158,11 +163,11 @@ namespace COMP___1640
             client.Timeout = 10000;
             client.DeliveryMethod = SmtpDeliveryMethod.Network;
             client.UseDefaultCredentials = false;
-            client.Credentials = new System.Net.NetworkCredential("minhduongnhat1996@gmail.com", "1102Nomatkhauhehe");
+            client.Credentials = new System.Net.NetworkCredential(mailAddress, mailPass);
 
             MailMessage mailMessage = new MailMessage();
-            mailMessage.To.Add("minhduongnhat1996@gmail.com");
-            mailMessage.From = new MailAddress("minhduongnhat1996@gmail.com");
+            mailMessage.To.Add(mailAddress);
+            mailMessage.From = new MailAddress(mailAddress);
             mailMessage.Subject = "[NEW IDEA SUBMITTED]";
             mailMessage.Body = MailBody(title, content, user.Email);
             mailMessage.BodyEncoding = Encoding.UTF8;

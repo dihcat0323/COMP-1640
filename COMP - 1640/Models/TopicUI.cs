@@ -13,5 +13,7 @@ namespace COMP___1640.Models
         public string PostedDate { get; set; }
         public string ClosureDate { get; set; }
         public string FinalClosureDate { get; set; }
+        public int TotalIdeas { get; set; }
+        public string Percentages { get; set; }
     }
 }
