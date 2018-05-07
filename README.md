@@ -8,6 +8,7 @@ Repository of Team 2 (a.k.a "No Mercy")
   - [ERD](https://github.com/minhdn2/COMP-1640/tree/master/Artefacts/ERD)
   - [Database](https://github.com/minhdn2/COMP-1640/tree/master/Artefacts/Database%20Scripts)
   - [Source files](https://github.com/minhdn2/COMP-1640/tree/master/COMP%20-%201640)
+  - [Credentials](https://github.com/minhdn2/COMP-1640/tree/master/COMP%20-%201640)
   
 
 
